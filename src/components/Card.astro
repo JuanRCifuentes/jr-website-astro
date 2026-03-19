@@ -1,0 +1,24 @@
+---
+interface Props {
+  as?: string
+  class?: string
+}
+
+const { as: Tag = 'div', class: className } = Astro.props
+---
+
+<Fragment>
+  {Tag === 'article' ? (
+    <article class:list={[className, 'group relative flex flex-col items-start']}>
+      <slot />
+    </article>
+  ) : Tag === 'li' ? (
+    <li class:list={[className, 'group relative flex flex-col items-start']}>
+      <slot />
+    </li>
+  ) : (
+    <div class:list={[className, 'group relative flex flex-col items-start']}>
+      <slot />
+    </div>
+  )}
+</Fragment>

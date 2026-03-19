@@ -1,0 +1,50 @@
+---
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import '../styles/global.css'
+
+interface Props {
+  title?: string
+  description?: string
+}
+
+const {
+  title = 'Juan R. Cifuentes - Software designer, founder, and amateur astronaut',
+  description = "I'm Juan, a software designer and entrepreneur based in New York City. I'm the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms.",
+} = Astro.props
+---
+
+<!DOCTYPE html>
+<html lang="en" class="h-full antialiased">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script is:inline>
+      // Prevent flash of wrong theme
+      const theme = localStorage.getItem('theme') || 'system'
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+      if (theme === 'dark' || (theme === 'system' && systemDark)) {
+        document.documentElement.classList.add('dark')
+      }
+    </script>
+  </head>
+  <body class="flex h-full bg-zinc-50 dark:bg-black">
+    <div class="flex w-full">
+      <div class="fixed inset-0 flex justify-center sm:px-8">
+        <div class="flex w-full max-w-7xl lg:px-8">
+          <div class="w-full bg-white ring-1 ring-zinc-100 dark:bg-zinc-900 dark:ring-zinc-300/20"></div>
+        </div>
+      </div>
+      <div class="relative flex w-full flex-col">
+        <Header />
+        <main class="flex-auto">
+          <slot />
+        </main>
+        <Footer />
+      </div>
+    </div>
+  </body>
+</html>

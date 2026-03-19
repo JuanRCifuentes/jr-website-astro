@@ -1,0 +1,52 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import SimpleLayout from '../../components/SimpleLayout.astro'
+import Card from '../../components/Card.astro'
+import CardTitle from '../../components/CardTitle.astro'
+import CardDescription from '../../components/CardDescription.astro'
+import CardCta from '../../components/CardCta.astro'
+import CardEyebrow from '../../components/CardEyebrow.astro'
+import { formatDate } from '../../lib/formatDate'
+
+const articles = (await getCollection('articles'))
+  .sort((a, b) => new Date(b.data.date).getTime() - new Date(a.data.date).getTime())
+---
+
+<BaseLayout title="Articles - Juan R. Cifuentes" description="All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order.">
+  <SimpleLayout
+    title="Writing on software design, company building, and the aerospace industry."
+    intro="All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
+  >
+    <div class="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
+      <div class="flex max-w-3xl flex-col space-y-16">
+        {articles.map((article) => (
+          <article class="md:grid md:grid-cols-4 md:items-baseline">
+            <Card class="md:col-span-3">
+              <CardTitle href={`/articles/${article.id}`}>
+                {article.data.title}
+              </CardTitle>
+              <CardEyebrow
+                as="time"
+                dateTime={article.data.date}
+                class="md:hidden"
+                decorate
+              >
+                {formatDate(article.data.date)}
+              </CardEyebrow>
+              <CardDescription>{article.data.description}</CardDescription>
+              <CardCta>Read article</CardCta>
+            </Card>
+            <CardEyebrow
+              as="time"
+              dateTime={article.data.date}
+              class="mt-1 max-md:hidden"
+            >
+              {formatDate(article.data.date)}
+            </CardEyebrow>
+          </article>
+        ))}
+      </div>
+    </div>
+  </SimpleLayout>
+</BaseLayout>
