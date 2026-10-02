@@ -95,7 +95,7 @@ const navItems = [
                     aria-current={currentLocation(item.href)}
                     aria-label={item.href === '/' ? 'Home' : undefined}
                     class:list={[
-                      'block rounded-full px-3 py-1.5 transition-colors',
+                      'flex items-center justify-center rounded-full px-3 py-1.5 transition-colors',
                       isActive(item.href)
                         ? 'bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
                         : 'hover:text-teal-500 dark:hover:text-teal-400',
