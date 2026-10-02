@@ -1,12 +1,10 @@
 ---
-import Container from './Container.astro'
-
-const pathname = Astro.url.pathname
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
 const isHomePage = pathname === '/'
 const isActive = (href: string) =>
   href === '/' ? isHomePage : pathname === href || pathname.startsWith(`${href}/`)
 const currentLocation = (href: string) =>
-  isActive(href) ? ((pathname === href || pathname.replace(/\/$/, '') === href) ? 'page' : 'location') : undefined
+  isActive(href) ? (pathname === href ? 'page' : 'location') : undefined
 
 const navItems = [
   { href: '/', label: 'Home' },
@@ -18,80 +16,45 @@ const navItems = [
 ]
 ---
 
-<header class="pointer-events-none relative z-50 flex flex-none flex-col" style="height: var(--header-height); margin-bottom: var(--header-mb)">
-  {isHomePage && (
-    <>
-      <div id="avatar-ref" class="order-last mt-[calc(--spacing(16)-(--spacing(3)))]"></div>
-      <Container
-        class="top-0 order-last -mb-3 pt-3"
-        style="position: var(--header-position)"
-      >
-        <div
-          class="top-(--avatar-top,--spacing(3)) w-full"
-          style="position: var(--header-inner-position)"
-        >
-          <div class="relative">
-            <div
-              class="absolute top-3 left-0 origin-left transition-opacity h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm"
-              id="avatar-border"
-              style="opacity: var(--avatar-border-opacity, 0); transform: var(--avatar-border-transform)"
-            ></div>
-            <a href="/" aria-label="Home" class="pointer-events-auto block h-16 w-16 origin-left" style="transform: var(--avatar-image-transform)">
+<header id="site-header" class="pointer-events-none relative z-50 h-16 flex-none">
+  <div class="header-shell fixed inset-x-0 top-0">
+    <div class="header-background" aria-hidden="true"></div>
+    <div class="header-controls mx-auto max-w-7xl px-4 sm:px-16 lg:px-28">
+      <div class="relative flex items-center gap-4">
+        <div class="flex flex-1">
+          <div class="h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
+            <a href="/" data-astro-prefetch="false" aria-label="Home" class="pointer-events-auto">
               <img
                 src="https://jr-w-a.juanrcifuentes.com/assets/avatar.jpg"
                 alt=""
-                class="rounded-full bg-page object-cover h-16 w-16"
+                class="rounded-full bg-page object-cover h-9 w-9"
               />
             </a>
           </div>
         </div>
-      </Container>
-    </>
-  )}
-  <div
-    id="header-ref"
-    class="top-0 z-10 h-16 pt-6"
-    style="position: var(--header-position)"
-  >
-    <Container
-      class="top-(--header-top,--spacing(6)) w-full"
-      style="position: var(--header-inner-position)"
-    >
-      <div class="relative flex gap-4">
-        <div class="flex flex-1">
-          {!isHomePage && (
-            <div class="h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
-              <a href="/" aria-label="Home" class="pointer-events-auto">
-                <img
-                  src="https://jr-w-a.juanrcifuentes.com/assets/avatar.jpg"
-                  alt=""
-                  class="rounded-full bg-page object-cover h-9 w-9"
-                />
-              </a>
-            </div>
-          )}
-        </div>
         <div class="flex flex-1 justify-end md:justify-center">
-          <!-- Mobile Navigation -->
-          <div class="pointer-events-auto md:hidden">
-            <button
-              onclick="document.getElementById('mobile-nav-dialog').showModal()"
-              class="group flex items-center rounded-full bg-surface/90 px-4 py-2 text-sm font-medium text-heading shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm"
-              type="button"
-            >
-              Menu
-              <svg viewBox="0 0 8 6" aria-hidden="true" class="ml-3 h-auto w-2 stroke-copy group-hover:stroke-control">
-                <path d="M1.75 1.75 4 4.25l2.25-2.5" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-          </div>
+          <!-- Mobile controls stay within thumb reach, above the browser UI. -->
+          <button
+            id="mobile-menu-toggle"
+            class="mobile-corner-button pointer-events-auto text-heading md:hidden"
+            type="button"
+            aria-label="Open navigation"
+            aria-haspopup="dialog"
+            aria-controls="mobile-nav-dialog"
+            onclick="document.getElementById('mobile-nav-dialog').showModal()"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" class="h-6 w-6">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           <!-- Desktop Navigation -->
-          <nav class="pointer-events-auto hidden md:block">
-            <ul class="flex rounded-full bg-surface/90 p-1 text-sm font-medium text-heading shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
+          <nav id="desktop-nav" class="pointer-events-auto hidden md:block">
+            <ul class="flex rounded-full p-1 text-sm font-medium text-heading">
               {navItems.map((item) => (
                 <li>
                   <a
                     href={item.href}
+              data-astro-prefetch="false"
                     aria-current={currentLocation(item.href)}
                     aria-label={item.href === '/' ? 'Home' : undefined}
                     class:list={[
@@ -120,7 +83,7 @@ const navItems = [
               type="button"
               id="theme-toggle"
               aria-label="Toggle theme"
-              class="group rounded-full bg-surface/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm transition"
+              class="mobile-theme-button group rounded-full bg-surface/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm transition"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -144,19 +107,16 @@ const navItems = [
           </div>
         </div>
       </div>
-    </Container>
+    </div>
   </div>
 </header>
-{isHomePage && (
-  <div class="flex-none" style="height: var(--content-offset)"></div>
-)}
 
 <!-- Mobile Navigation Dialog -->
 <dialog id="mobile-nav-dialog" class="m-0 border-none bg-transparent p-0 fixed inset-0 h-full w-full max-h-none max-w-none">
   <div class="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-xs dark:bg-black/80" onclick="document.getElementById('mobile-nav-dialog').close()"></div>
-  <div class="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-surface p-8 ring-1 ring-border/70 dark:ring-border">
+  <div class="mobile-menu-panel fixed z-50 rounded-3xl bg-surface p-6 ring-1 ring-border/70">
     <div class="flex flex-row-reverse items-center justify-between">
-      <button aria-label="Close menu" class="-m-1 p-1" onclick="document.getElementById('mobile-nav-dialog').close()">
+      <button aria-label="Close menu" class="-m-2 flex h-11 w-11 items-center justify-center" onclick="document.getElementById('mobile-nav-dialog').close()">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6 text-copy">
           <path d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -169,6 +129,7 @@ const navItems = [
           <li>
             <a
               href={item.href}
+              data-astro-prefetch="false"
               aria-current={currentLocation(item.href)}
               class:list={[
                 'block rounded-full px-3 py-2 transition-colors',
@@ -181,10 +142,103 @@ const navItems = [
         ))}
       </ul>
     </nav>
+    <div class="mt-5 border-t border-border pt-4">
+      <button id="swap-mobile-controls" type="button" aria-pressed="false" class="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-3 text-sm text-heading hover:bg-page">
+        <span>Swap button sides</span>
+        <span id="mobile-menu-side" class="text-copy">Menu on right</span>
+      </button>
+    </div>
   </div>
 </dialog>
 
 <style>
+  .header-shell { height: 88px; }
+  .header-controls { padding-top: 24px; }
+  .header-background {
+    position: absolute;
+    left: 50%;
+    top: 24px;
+    width: var(--nav-width, 406px);
+    height: 44px;
+    transform: translateX(-50%);
+    border-radius: 999px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 12px rgb(24 24 27 / 5%);
+    transition: width 350ms cubic-bezier(.22, 1, .36, 1),
+      height 350ms cubic-bezier(.22, 1, .36, 1),
+      top 350ms cubic-bezier(.22, 1, .36, 1),
+      border-radius 350ms cubic-bezier(.22, 1, .36, 1);
+  }
+  #site-header[data-expanded='true'] .header-background {
+    width: 100%;
+    height: 88px;
+    top: 0;
+    border-radius: 0;
+  }
+  .mobile-menu-panel {
+    right: max(16px, env(safe-area-inset-right));
+    bottom: calc(88px + env(safe-area-inset-bottom));
+    width: min(320px, calc(100% - 32px));
+    max-height: calc(100dvh - 120px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  :global(html[data-menu-side='left']) .mobile-menu-panel {
+    right: auto;
+    left: max(16px, env(safe-area-inset-left));
+  }
+  .mobile-corner-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+
+  }
+  @media (width >= 48rem) {
+    .mobile-corner-button { display: none; }
+  }
+  @media (width < 48rem) {
+    :global(body) { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+    #mobile-menu-toggle, .mobile-theme-button {
+      position: fixed;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+      background: rgb(246 248 251 / 72%);
+      border: 1px solid rgb(255 255 255 / 65%);
+      box-shadow: inset 0 1px 1px rgb(255 255 255 / 85%), 0 4px 16px rgb(16 42 67 / 14%);
+      -webkit-backdrop-filter: blur(20px) saturate(150%);
+      backdrop-filter: blur(20px) saturate(150%);
+    }
+    #mobile-menu-toggle { right: max(16px, env(safe-area-inset-right)); }
+    .mobile-theme-button {
+      left: max(16px, env(safe-area-inset-left));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+    }
+    :global(.dark) #mobile-menu-toggle, :global(.dark) .mobile-theme-button {
+      background: rgb(51 69 87 / 72%);
+      border-color: rgb(255 255 255 / 14%);
+      box-shadow: inset 0 1px 1px rgb(255 255 255 / 16%), 0 4px 16px rgb(0 0 0 / 22%);
+    }
+    :global(html[data-menu-side='left']) #mobile-menu-toggle {
+      right: auto;
+      left: max(16px, env(safe-area-inset-left));
+    }
+    :global(html[data-menu-side='left']) .mobile-theme-button {
+      left: auto;
+      right: max(16px, env(safe-area-inset-right));
+    }
+    .header-shell { position: absolute; }
+    .header-background { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .header-background { transition: none; }
+  }
   dialog#mobile-nav-dialog::backdrop {
     background: transparent;
   }
@@ -193,14 +247,16 @@ const navItems = [
 <script>
   // Theme toggle
   function initTheme(root = document.documentElement) {
-    var theme = localStorage.getItem('theme') || 'system'
-    var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const theme = localStorage.getItem('theme') || 'system'
+    const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-    if (theme === 'dark' || (theme === 'system' && systemDark)) {
-      root.classList.add('dark')
-    } else {
-      root.classList.remove('dark')
-    }
+    const dark = theme === 'dark' || (theme === 'system' && systemDark)
+    root.classList.toggle('dark', dark)
+    root.ownerDocument.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#102A43' : '#FFFFFF')
+  }
+
+  function initMobileControls(root = document.documentElement) {
+    root.dataset.menuSide = localStorage.getItem('menu-side') === 'left' ? 'left' : 'right'
   }
 
   // Module scripts run once; bind page-specific behavior after every navigation.
@@ -209,6 +265,7 @@ const navItems = [
   document.addEventListener('astro:before-swap', (event) => {
     pageController?.abort()
     initTheme(event.newDocument.documentElement)
+    initMobileControls(event.newDocument.documentElement)
   })
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -220,107 +277,56 @@ const navItems = [
     pageController = new AbortController()
     const { signal } = pageController
     initTheme()
+    initMobileControls()
+
+    const mobileMenu = document.getElementById('mobile-nav-dialog') as HTMLDialogElement | null
+    mobileMenu?.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a[href]')) mobileMenu.close()
+    }, { signal })
+
+    const swapButton = document.getElementById('swap-mobile-controls')
+    const sideLabel = document.getElementById('mobile-menu-side')
+    const updateSideLabel = () => {
+      const left = document.documentElement.dataset.menuSide === 'left'
+      swapButton?.setAttribute('aria-pressed', String(left))
+      if (sideLabel) sideLabel.textContent = left ? 'Menu on left' : 'Menu on right'
+    }
+    updateSideLabel()
+    swapButton?.addEventListener('click', () => {
+      const side = document.documentElement.dataset.menuSide === 'left' ? 'right' : 'left'
+      localStorage.setItem('menu-side', side)
+      initMobileControls()
+      updateSideLabel()
+    }, { signal })
 
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark')
       localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      initTheme()
     }, { signal })
 
-    // Header scroll animation (homepage only)
-    var isHomePage = window.location.pathname === '/'
+    const header = document.getElementById('site-header')
+    const nav = document.getElementById('desktop-nav')
+    if (!header || !nav) return
 
-    if (isHomePage) {
-      var headerRef = document.getElementById('header-ref')
-      var avatarRef = document.getElementById('avatar-ref')
-
-      function clamp(number: number, a: number, b: number) {
-        var min = Math.min(a, b)
-        var max = Math.max(a, b)
-        return Math.min(Math.max(number, min), max)
-      }
-
-      function setProperty(property: string, value: string) {
-        document.documentElement.style.setProperty(property, value)
-      }
-
-      function removeProperty(property: string) {
-        document.documentElement.style.removeProperty(property)
-      }
-
-      var downDelay = avatarRef ? avatarRef.offsetTop : 0
-      var upDelay = 64
-      var isInitial = true
-
-      function updateHeaderStyles() {
-        if (!headerRef) return
-
-        var rect = headerRef.getBoundingClientRect()
-        var top = rect.top
-        var height = rect.height
-        var scrollY = clamp(window.scrollY, 0, document.body.scrollHeight - window.innerHeight)
-
-        if (isInitial) {
-          setProperty('--header-position', 'sticky')
-        }
-
-        setProperty('--content-offset', downDelay + 'px')
-
-        if (isInitial || scrollY < downDelay) {
-          setProperty('--header-height', (downDelay + height) + 'px')
-          setProperty('--header-mb', (-downDelay) + 'px')
-        } else if (top + height < -upDelay) {
-          var offset = Math.max(height, scrollY - upDelay)
-          setProperty('--header-height', offset + 'px')
-          setProperty('--header-mb', (height - offset) + 'px')
-        } else if (top === 0) {
-          setProperty('--header-height', (scrollY + height) + 'px')
-          setProperty('--header-mb', (-scrollY) + 'px')
-        }
-
-        if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
-          setProperty('--header-inner-position', 'fixed')
-          removeProperty('--header-top')
-          removeProperty('--avatar-top')
-        } else {
-          removeProperty('--header-inner-position')
-          setProperty('--header-top', '0px')
-          setProperty('--avatar-top', '0px')
-        }
-      }
-
-      function updateAvatarStyles() {
-        var fromScale = 1
-        var toScale = 36 / 64
-        var fromX = 0
-        var toX = 2 / 16
-
-        var scrollY = downDelay - window.scrollY
-
-        var scale = (scrollY * (fromScale - toScale)) / downDelay + toScale
-        scale = clamp(scale, fromScale, toScale)
-
-        var x = (scrollY * (fromX - toX)) / downDelay + toX
-        x = clamp(x, fromX, toX)
-
-        setProperty('--avatar-image-transform', 'translate3d(' + x + 'rem, 0, 0) scale(' + scale + ')')
-
-        var borderScale = 1 / (toScale / scale)
-        var borderX = (-toX + x) * borderScale
-        var borderTransform = 'translate3d(' + borderX + 'rem, 0, 0) scale(' + borderScale + ')'
-
-        setProperty('--avatar-border-transform', borderTransform)
-        setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
-      }
-
-      function updateStyles() {
-        updateHeaderStyles()
-        updateAvatarStyles()
-        isInitial = false
-      }
-
-      updateStyles()
-      window.addEventListener('scroll', updateStyles, { passive: true, signal })
-      window.addEventListener('resize', updateStyles, { signal })
+    const measureNav = () => {
+      header.style.setProperty('--nav-width', `${nav.getBoundingClientRect().width}px`)
     }
+    const observer = new ResizeObserver(measureNav)
+    observer.observe(nav)
+    signal.addEventListener('abort', () => observer.disconnect(), { once: true })
+    measureNav()
+
+    // Hysteresis prevents flickering near the scroll threshold.
+    let expanded = window.scrollY > 48
+    const updateBar = () => {
+      const next = expanded ? window.scrollY > 16 : window.scrollY > 64
+      if (next !== expanded || !header.hasAttribute('data-expanded')) {
+        expanded = next
+        header.dataset.expanded = String(expanded)
+      }
+    }
+    updateBar()
+    window.addEventListener('scroll', updateBar, { passive: true, signal })
   })
 </script>

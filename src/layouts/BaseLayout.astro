@@ -19,18 +19,24 @@ const {
 <html lang="en" class="h-full antialiased">
   <head>
     <ClientRouter />
+    <script>
+      import '../lib/navigationCache'
+    </script>
     <meta charset="utf-8" />
+    <meta name="theme-color" content="#FFFFFF" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
+      document.documentElement.dataset.menuSide = localStorage.getItem('menu-side') === 'left' ? 'left' : 'right'
       // Prevent flash of wrong theme
       const theme = localStorage.getItem('theme') || 'system'
       const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
       if (theme === 'dark' || (theme === 'system' && systemDark)) {
         document.documentElement.classList.add('dark')
       }
+      document.querySelector('meta[name="theme-color"]').content = document.documentElement.classList.contains('dark') ? '#102A43' : '#FFFFFF'
     </script>
   </head>
   <body class="flex h-full bg-page">

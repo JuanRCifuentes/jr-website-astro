@@ -17,7 +17,7 @@ const navLinks = [
         <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
           <div class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-heading">
             {navLinks.map((link) => (
-              <a href={link.href} class="transition hover:text-accent-foreground">
+              <a href={link.href} data-astro-prefetch="false" class="transition hover:text-accent-foreground">
                 {link.label}
               </a>
             ))}
