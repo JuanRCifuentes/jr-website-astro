@@ -9,6 +9,8 @@ import cloudflare from "@astrojs/cloudflare";
 export default defineConfig({
   integrations: [mdx()],
 
+  prefetch: { prefetchAll: true, defaultStrategy: "load" },
+
   vite: {
       plugins: [tailwindcss()],
   },

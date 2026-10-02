@@ -171,132 +171,137 @@ const navItems = [
   }
 </style>
 
-<script is:inline>
+<script>
   // Theme toggle
-  function initTheme() {
+  function initTheme(root = document.documentElement) {
     var theme = localStorage.getItem('theme') || 'system'
     var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
     if (theme === 'dark' || (theme === 'system' && systemDark)) {
-      document.documentElement.classList.add('dark')
+      root.classList.add('dark')
     } else {
-      document.documentElement.classList.remove('dark')
+      root.classList.remove('dark')
     }
   }
 
-  initTheme()
+  // Module scripts run once; bind page-specific behavior after every navigation.
+  let pageController: AbortController | undefined
 
-  document.getElementById('theme-toggle')?.addEventListener('click', function() {
-    var isDark = document.documentElement.classList.contains('dark')
-    if (isDark) {
-      document.documentElement.classList.remove('dark')
-      localStorage.setItem('theme', 'light')
-    } else {
-      document.documentElement.classList.add('dark')
-      localStorage.setItem('theme', 'dark')
-    }
+  document.addEventListener('astro:before-swap', (event) => {
+    pageController?.abort()
+    initTheme(event.newDocument.documentElement)
   })
 
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function() {
-    if (localStorage.getItem('theme') === 'system' || !localStorage.getItem('theme')) {
-      initTheme()
-    }
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+    initTheme()
   })
 
-  // Header scroll animation (homepage only)
-  var isHomePage = window.location.pathname === '/'
+  document.addEventListener('astro:page-load', () => {
+    pageController?.abort()
+    pageController = new AbortController()
+    const { signal } = pageController
+    initTheme()
 
-  if (isHomePage) {
-    var headerRef = document.getElementById('header-ref')
-    var avatarRef = document.getElementById('avatar-ref')
+    document.getElementById('theme-toggle')?.addEventListener('click', () => {
+      const isDark = document.documentElement.classList.toggle('dark')
+      localStorage.setItem('theme', isDark ? 'dark' : 'light')
+    }, { signal })
 
-    function clamp(number, a, b) {
-      var min = Math.min(a, b)
-      var max = Math.max(a, b)
-      return Math.min(Math.max(number, min), max)
-    }
+    // Header scroll animation (homepage only)
+    var isHomePage = window.location.pathname === '/'
 
-    function setProperty(property, value) {
-      document.documentElement.style.setProperty(property, value)
-    }
+    if (isHomePage) {
+      var headerRef = document.getElementById('header-ref')
+      var avatarRef = document.getElementById('avatar-ref')
 
-    function removeProperty(property) {
-      document.documentElement.style.removeProperty(property)
-    }
-
-    var downDelay = avatarRef ? avatarRef.offsetTop : 0
-    var upDelay = 64
-    var isInitial = true
-
-    function updateHeaderStyles() {
-      if (!headerRef) return
-
-      var rect = headerRef.getBoundingClientRect()
-      var top = rect.top
-      var height = rect.height
-      var scrollY = clamp(window.scrollY, 0, document.body.scrollHeight - window.innerHeight)
-
-      if (isInitial) {
-        setProperty('--header-position', 'sticky')
+      function clamp(number: number, a: number, b: number) {
+        var min = Math.min(a, b)
+        var max = Math.max(a, b)
+        return Math.min(Math.max(number, min), max)
       }
 
-      setProperty('--content-offset', downDelay + 'px')
-
-      if (isInitial || scrollY < downDelay) {
-        setProperty('--header-height', (downDelay + height) + 'px')
-        setProperty('--header-mb', (-downDelay) + 'px')
-      } else if (top + height < -upDelay) {
-        var offset = Math.max(height, scrollY - upDelay)
-        setProperty('--header-height', offset + 'px')
-        setProperty('--header-mb', (height - offset) + 'px')
-      } else if (top === 0) {
-        setProperty('--header-height', (scrollY + height) + 'px')
-        setProperty('--header-mb', (-scrollY) + 'px')
+      function setProperty(property: string, value: string) {
+        document.documentElement.style.setProperty(property, value)
       }
 
-      if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
-        setProperty('--header-inner-position', 'fixed')
-        removeProperty('--header-top')
-        removeProperty('--avatar-top')
-      } else {
-        removeProperty('--header-inner-position')
-        setProperty('--header-top', '0px')
-        setProperty('--avatar-top', '0px')
+      function removeProperty(property: string) {
+        document.documentElement.style.removeProperty(property)
       }
+
+      var downDelay = avatarRef ? avatarRef.offsetTop : 0
+      var upDelay = 64
+      var isInitial = true
+
+      function updateHeaderStyles() {
+        if (!headerRef) return
+
+        var rect = headerRef.getBoundingClientRect()
+        var top = rect.top
+        var height = rect.height
+        var scrollY = clamp(window.scrollY, 0, document.body.scrollHeight - window.innerHeight)
+
+        if (isInitial) {
+          setProperty('--header-position', 'sticky')
+        }
+
+        setProperty('--content-offset', downDelay + 'px')
+
+        if (isInitial || scrollY < downDelay) {
+          setProperty('--header-height', (downDelay + height) + 'px')
+          setProperty('--header-mb', (-downDelay) + 'px')
+        } else if (top + height < -upDelay) {
+          var offset = Math.max(height, scrollY - upDelay)
+          setProperty('--header-height', offset + 'px')
+          setProperty('--header-mb', (height - offset) + 'px')
+        } else if (top === 0) {
+          setProperty('--header-height', (scrollY + height) + 'px')
+          setProperty('--header-mb', (-scrollY) + 'px')
+        }
+
+        if (top === 0 && scrollY > 0 && scrollY >= downDelay) {
+          setProperty('--header-inner-position', 'fixed')
+          removeProperty('--header-top')
+          removeProperty('--avatar-top')
+        } else {
+          removeProperty('--header-inner-position')
+          setProperty('--header-top', '0px')
+          setProperty('--avatar-top', '0px')
+        }
+      }
+
+      function updateAvatarStyles() {
+        var fromScale = 1
+        var toScale = 36 / 64
+        var fromX = 0
+        var toX = 2 / 16
+
+        var scrollY = downDelay - window.scrollY
+
+        var scale = (scrollY * (fromScale - toScale)) / downDelay + toScale
+        scale = clamp(scale, fromScale, toScale)
+
+        var x = (scrollY * (fromX - toX)) / downDelay + toX
+        x = clamp(x, fromX, toX)
+
+        setProperty('--avatar-image-transform', 'translate3d(' + x + 'rem, 0, 0) scale(' + scale + ')')
+
+        var borderScale = 1 / (toScale / scale)
+        var borderX = (-toX + x) * borderScale
+        var borderTransform = 'translate3d(' + borderX + 'rem, 0, 0) scale(' + borderScale + ')'
+
+        setProperty('--avatar-border-transform', borderTransform)
+        setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
+      }
+
+      function updateStyles() {
+        updateHeaderStyles()
+        updateAvatarStyles()
+        isInitial = false
+      }
+
+      updateStyles()
+      window.addEventListener('scroll', updateStyles, { passive: true, signal })
+      window.addEventListener('resize', updateStyles, { signal })
     }
-
-    function updateAvatarStyles() {
-      var fromScale = 1
-      var toScale = 36 / 64
-      var fromX = 0
-      var toX = 2 / 16
-
-      var scrollY = downDelay - window.scrollY
-
-      var scale = (scrollY * (fromScale - toScale)) / downDelay + toScale
-      scale = clamp(scale, fromScale, toScale)
-
-      var x = (scrollY * (fromX - toX)) / downDelay + toX
-      x = clamp(x, fromX, toX)
-
-      setProperty('--avatar-image-transform', 'translate3d(' + x + 'rem, 0, 0) scale(' + scale + ')')
-
-      var borderScale = 1 / (toScale / scale)
-      var borderX = (-toX + x) * borderScale
-      var borderTransform = 'translate3d(' + borderX + 'rem, 0, 0) scale(' + borderScale + ')'
-
-      setProperty('--avatar-border-transform', borderTransform)
-      setProperty('--avatar-border-opacity', scale === toScale ? '1' : '0')
-    }
-
-    function updateStyles() {
-      updateHeaderStyles()
-      updateAvatarStyles()
-      isInitial = false
-    }
-
-    updateStyles()
-    window.addEventListener('scroll', updateStyles, { passive: true })
-    window.addEventListener('resize', updateStyles)
-  }
+  })
 </script>
