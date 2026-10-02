@@ -32,7 +32,7 @@ const navItems = [
         >
           <div class="relative">
             <div
-              class="absolute top-3 left-0 origin-left transition-opacity h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:ring-white/10"
+              class="absolute top-3 left-0 origin-left transition-opacity h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm"
               id="avatar-border"
               style="opacity: var(--avatar-border-opacity, 0); transform: var(--avatar-border-transform)"
             ></div>
@@ -40,7 +40,7 @@ const navItems = [
               <img
                 src="https://jr-w-a.juanrcifuentes.com/assets/avatar.jpg"
                 alt=""
-                class="rounded-full bg-zinc-100 object-cover dark:bg-zinc-800 h-16 w-16"
+                class="rounded-full bg-page object-cover h-16 w-16"
               />
             </a>
           </div>
@@ -60,12 +60,12 @@ const navItems = [
       <div class="relative flex gap-4">
         <div class="flex flex-1">
           {!isHomePage && (
-            <div class="h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:ring-white/10">
+            <div class="h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
               <a href="/" aria-label="Home" class="pointer-events-auto">
                 <img
                   src="https://jr-w-a.juanrcifuentes.com/assets/avatar.jpg"
                   alt=""
-                  class="rounded-full bg-zinc-100 object-cover dark:bg-zinc-800 h-9 w-9"
+                  class="rounded-full bg-page object-cover h-9 w-9"
                 />
               </a>
             </div>
@@ -76,18 +76,18 @@ const navItems = [
           <div class="pointer-events-auto md:hidden">
             <button
               onclick="document.getElementById('mobile-nav-dialog').showModal()"
-              class="group flex items-center rounded-full bg-white/90 px-4 py-2 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10 dark:hover:ring-white/20"
+              class="group flex items-center rounded-full bg-surface/90 px-4 py-2 text-sm font-medium text-heading shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm"
               type="button"
             >
               Menu
-              <svg viewBox="0 0 8 6" aria-hidden="true" class="ml-3 h-auto w-2 stroke-zinc-500 group-hover:stroke-zinc-700 dark:group-hover:stroke-zinc-400">
+              <svg viewBox="0 0 8 6" aria-hidden="true" class="ml-3 h-auto w-2 stroke-copy group-hover:stroke-control">
                 <path d="M1.75 1.75 4 4.25l2.25-2.5" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
             </button>
           </div>
           <!-- Desktop Navigation -->
           <nav class="pointer-events-auto hidden md:block">
-            <ul class="flex rounded-full bg-white/90 p-1 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
+            <ul class="flex rounded-full bg-surface/90 p-1 text-sm font-medium text-heading shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
               {navItems.map((item) => (
                 <li>
                   <a
@@ -97,8 +97,8 @@ const navItems = [
                     class:list={[
                       'flex items-center justify-center rounded-full px-3 py-1.5 transition-colors',
                       isActive(item.href)
-                        ? 'bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
-                        : 'hover:text-teal-500 dark:hover:text-teal-400',
+                        ?'bg-control text-control-foreground'
+                        :'hover:text-accent-foreground',
                     ]}
                   >
                     {item.href === '/' ? (
@@ -120,7 +120,7 @@ const navItems = [
               type="button"
               id="theme-toggle"
               aria-label="Toggle theme"
-              class="group rounded-full bg-white/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm transition dark:bg-zinc-800/90 dark:ring-white/10 dark:hover:ring-white/20"
+              class="group rounded-full bg-surface/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm transition"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -128,7 +128,7 @@ const navItems = [
                 stroke-linecap="round"
                 stroke-linejoin="round"
                 aria-hidden="true"
-                class="h-6 w-6 fill-zinc-100 stroke-zinc-500 transition group-hover:fill-zinc-200 group-hover:stroke-zinc-700 dark:hidden [@media(prefers-color-scheme:dark)]:fill-teal-50 [@media(prefers-color-scheme:dark)]:stroke-teal-500 [@media(prefers-color-scheme:dark)]:group-hover:fill-teal-50 [@media(prefers-color-scheme:dark)]:group-hover:stroke-teal-600"
+                class="h-6 w-6 fill-page stroke-copy transition group-hover:fill-border group-hover:stroke-control dark:hidden [@media(prefers-color-scheme:dark)]:fill-accent [@media(prefers-color-scheme:dark)]:stroke-accent [@media(prefers-color-scheme:dark)]:group-hover:fill-accent-foreground [@media(prefers-color-scheme:dark)]:group-hover:stroke-accent-foreground"
               >
                 <path d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z" />
                 <path d="M12.25 3v1.5M21.5 12.25H20M18.791 18.791l-1.06-1.06M18.791 5.709l-1.06 1.06M12.25 20v1.5M4.5 12.25H3M6.77 6.77 5.709 5.709M6.77 17.73l-1.061 1.061" fill="none" />
@@ -136,7 +136,7 @@ const navItems = [
               <svg
                 viewBox="0 0 24 24"
                 aria-hidden="true"
-                class="hidden h-6 w-6 fill-zinc-700 stroke-zinc-500 transition not-[@media_(prefers-color-scheme:dark)]:fill-teal-400/10 not-[@media_(prefers-color-scheme:dark)]:stroke-teal-500 dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-zinc-400"
+                class="hidden h-6 w-6 fill-heading stroke-copy transition not-[@media_(prefers-color-scheme:dark)]:fill-accent/10 not-[@media_(prefers-color-scheme:dark)]:stroke-accent-foreground dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-copy"
               >
                 <path d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
               </svg>
@@ -154,17 +154,17 @@ const navItems = [
 <!-- Mobile Navigation Dialog -->
 <dialog id="mobile-nav-dialog" class="m-0 border-none bg-transparent p-0 fixed inset-0 h-full w-full max-h-none max-w-none">
   <div class="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-xs dark:bg-black/80" onclick="document.getElementById('mobile-nav-dialog').close()"></div>
-  <div class="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-white p-8 ring-1 ring-zinc-900/5 dark:bg-zinc-900 dark:ring-zinc-800">
+  <div class="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-surface p-8 ring-1 ring-border/70 dark:ring-border">
     <div class="flex flex-row-reverse items-center justify-between">
       <button aria-label="Close menu" class="-m-1 p-1" onclick="document.getElementById('mobile-nav-dialog').close()">
-        <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6 text-zinc-500 dark:text-zinc-400">
+        <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6 text-copy">
           <path d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-      <h2 class="text-sm font-medium text-zinc-600 dark:text-zinc-400">Navigation</h2>
+      <h2 class="text-sm font-medium text-copy">Navigation</h2>
     </div>
     <nav class="mt-6">
-      <ul class="-mx-3 -my-2 space-y-1 text-base text-zinc-800 dark:text-zinc-300">
+      <ul class="-mx-3 -my-2 space-y-1 text-base text-heading">
         {navItems.map((item) => (
           <li>
             <a
@@ -173,8 +173,8 @@ const navItems = [
               class:list={[
                 'block rounded-full px-3 py-2 transition-colors',
                 isActive(item.href)
-                  ? 'bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
-                  : 'hover:text-teal-500 dark:hover:text-teal-400',
+                  ?'bg-control text-control-foreground'
+                  :'hover:text-accent-foreground',
               ]}
             >{item.label}</a>
           </li>
