@@ -151,8 +151,8 @@ const resume = [
           </h2>
           <ol class="mt-6 space-y-4">
             {resume.map((role) => {
-              const startLabel = typeof role.start === 'string' ? role.start : role.start.label
-              const startDate = typeof role.start === 'string' ? role.start : role.start.dateTime
+              const startLabel = role.start
+              const startDate = role.start
               const endLabel = typeof role.end === 'string' ? role.end : role.end.label
               const endDate = typeof role.end === 'string' ? role.end : role.end.dateTime
               return (
