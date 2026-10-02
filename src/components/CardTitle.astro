@@ -10,11 +10,11 @@ const { as: Tag = 'h2', href } = Astro.props
 ---
 
 {Tag === 'h3' ? (
-  <h3 class="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+  <h3 class="text-base font-semibold tracking-tight text-heading">
     {href ? <CardLink href={href}><slot /></CardLink> : <slot />}
   </h3>
 ) : (
-  <h2 class="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+  <h2 class="text-base font-semibold tracking-tight text-heading">
     {href ? <CardLink href={href}><slot /></CardLink> : <slot />}
   </h2>
 )}
