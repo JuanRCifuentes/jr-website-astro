@@ -7,6 +7,8 @@ import cloudflare from "@astrojs/cloudflare";
 
 // https://astro.build/config
 export default defineConfig({
+  // Preserve Astro 6 spacing between inline elements.
+  compressHTML: true,
   integrations: [mdx()],
 
   vite: {
