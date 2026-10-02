@@ -33,19 +33,20 @@ const navItems = [
           </div>
         </div>
         <div class="flex flex-1 justify-end md:justify-center">
-          <!-- Mobile Navigation -->
-          <div class="pointer-events-auto md:hidden">
-            <button
-              onclick="document.getElementById('mobile-nav-dialog').showModal()"
-              class="group flex items-center rounded-full bg-surface/90 px-4 py-2 text-sm font-medium text-heading shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm"
-              type="button"
-            >
-              Menu
-              <svg viewBox="0 0 8 6" aria-hidden="true" class="ml-3 h-auto w-2 stroke-copy group-hover:stroke-control">
-                <path d="M1.75 1.75 4 4.25l2.25-2.5" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-          </div>
+          <!-- Mobile controls stay within thumb reach, above the browser UI. -->
+          <button
+            id="mobile-menu-toggle"
+            class="mobile-corner-button pointer-events-auto text-heading md:hidden"
+            type="button"
+            aria-label="Open navigation"
+            aria-haspopup="dialog"
+            aria-controls="mobile-nav-dialog"
+            onclick="document.getElementById('mobile-nav-dialog').showModal()"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" class="h-6 w-6">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
           <!-- Desktop Navigation -->
           <nav id="desktop-nav" class="pointer-events-auto hidden md:block">
             <ul class="flex rounded-full p-1 text-sm font-medium text-heading">
@@ -81,7 +82,7 @@ const navItems = [
               type="button"
               id="theme-toggle"
               aria-label="Toggle theme"
-              class="group rounded-full bg-surface/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm transition"
+              class="mobile-theme-button group rounded-full bg-surface/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm transition"
             >
               <svg
                 viewBox="0 0 24 24"
@@ -112,9 +113,9 @@ const navItems = [
 <!-- Mobile Navigation Dialog -->
 <dialog id="mobile-nav-dialog" class="m-0 border-none bg-transparent p-0 fixed inset-0 h-full w-full max-h-none max-w-none">
   <div class="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-xs dark:bg-black/80" onclick="document.getElementById('mobile-nav-dialog').close()"></div>
-  <div class="fixed inset-x-4 top-8 z-50 origin-top rounded-3xl bg-surface p-8 ring-1 ring-border/70 dark:ring-border">
+  <div class="mobile-menu-panel fixed z-50 rounded-3xl bg-surface p-6 ring-1 ring-border/70">
     <div class="flex flex-row-reverse items-center justify-between">
-      <button aria-label="Close menu" class="-m-1 p-1" onclick="document.getElementById('mobile-nav-dialog').close()">
+      <button aria-label="Close menu" class="-m-2 flex h-11 w-11 items-center justify-center" onclick="document.getElementById('mobile-nav-dialog').close()">
         <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6 text-copy">
           <path d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
@@ -167,7 +168,44 @@ const navItems = [
     top: 0;
     border-radius: 0;
   }
+  .mobile-menu-panel {
+    left: max(16px, env(safe-area-inset-left));
+    bottom: calc(88px + env(safe-area-inset-bottom));
+    width: min(320px, calc(100% - 32px));
+    max-height: calc(100dvh - 120px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+  }
+  .mobile-corner-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    box-shadow: 0 4px 16px rgb(16 42 67 / 10%);
+  }
+  @media (width >= 48rem) {
+    .mobile-corner-button { display: none; }
+  }
   @media (width < 48rem) {
+    :global(body) { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
+    #mobile-menu-toggle, .mobile-theme-button {
+      position: fixed;
+      bottom: calc(16px + env(safe-area-inset-bottom));
+    }
+    #mobile-menu-toggle { left: max(16px, env(safe-area-inset-left)); }
+    .mobile-theme-button {
+      right: max(16px, env(safe-area-inset-right));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      background: var(--color-surface);
+    }
     .header-shell { position: absolute; }
     .header-background { display: none; }
   }
