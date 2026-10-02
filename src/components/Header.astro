@@ -248,7 +248,9 @@ const navItems = [
     const theme = localStorage.getItem('theme') || 'system'
     const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
 
-    root.classList.toggle('dark', theme === 'dark' || (theme === 'system' && systemDark))
+    const dark = theme === 'dark' || (theme === 'system' && systemDark)
+    root.classList.toggle('dark', dark)
+    root.ownerDocument.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#102A43' : '#FFFFFF')
   }
 
   function initMobileControls(root = document.documentElement) {
@@ -293,6 +295,7 @@ const navItems = [
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark')
       localStorage.setItem('theme', isDark ? 'dark' : 'light')
+      initTheme()
     }, { signal })
 
     const header = document.getElementById('site-header')
