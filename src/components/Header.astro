@@ -277,6 +277,11 @@ const navItems = [
     initTheme()
     initMobileControls()
 
+    const mobileMenu = document.getElementById('mobile-nav-dialog') as HTMLDialogElement | null
+    mobileMenu?.addEventListener('click', (event) => {
+      if ((event.target as Element).closest('a[href]')) mobileMenu.close()
+    }, { signal })
+
     const swapButton = document.getElementById('swap-mobile-controls')
     const sideLabel = document.getElementById('mobile-menu-side')
     const updateSideLabel = () => {
