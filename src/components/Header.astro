@@ -3,6 +3,9 @@ import Container from './Container.astro'
 
 const pathname = Astro.url.pathname
 const isHomePage = pathname === '/'
+const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
+const currentLocation = (href: string) =>
+  isActive(href) ? (pathname.replace(/\/$/, '') === href ? 'page' : 'location') : undefined
 
 const navItems = [
   { href: '/about', label: 'About' },
@@ -82,22 +85,21 @@ const navItems = [
           </div>
           <!-- Desktop Navigation -->
           <nav class="pointer-events-auto hidden md:block">
-            <ul class="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
+            <ul class="flex rounded-full bg-white/90 p-1 text-sm font-medium text-zinc-800 shadow-lg ring-1 shadow-zinc-800/5 ring-zinc-900/5 backdrop-blur-sm dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
               {navItems.map((item) => (
                 <li>
                   <a
                     href={item.href}
+                    aria-current={currentLocation(item.href)}
                     class:list={[
-                      'relative block px-3 py-2 transition',
-                      pathname === item.href
-                        ? 'text-teal-500 dark:text-teal-400'
+                      'block rounded-full px-3 py-1.5 transition-colors',
+                      isActive(item.href)
+                        ? 'bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
                         : 'hover:text-teal-500 dark:hover:text-teal-400',
                     ]}
                   >
                     {item.label}
-                    {pathname === item.href && (
-                      <span class="absolute inset-x-1 -bottom-px h-px bg-linear-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0"></span>
-                    )}
+
                   </a>
                 </li>
               ))}
@@ -154,10 +156,19 @@ const navItems = [
       <h2 class="text-sm font-medium text-zinc-600 dark:text-zinc-400">Navigation</h2>
     </div>
     <nav class="mt-6">
-      <ul class="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
+      <ul class="-mx-3 -my-2 space-y-1 text-base text-zinc-800 dark:text-zinc-300">
         {navItems.map((item) => (
           <li>
-            <a href={item.href} class="block py-2">{item.label}</a>
+            <a
+              href={item.href}
+              aria-current={currentLocation(item.href)}
+              class:list={[
+                'block rounded-full px-3 py-2 transition-colors',
+                isActive(item.href)
+                  ? 'bg-teal-100 text-teal-900 dark:bg-teal-900 dark:text-teal-100'
+                  : 'hover:text-teal-500 dark:hover:text-teal-400',
+              ]}
+            >{item.label}</a>
           </li>
         ))}
       </ul>
