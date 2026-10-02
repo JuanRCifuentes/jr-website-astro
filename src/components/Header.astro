@@ -3,11 +3,13 @@ import Container from './Container.astro'
 
 const pathname = Astro.url.pathname
 const isHomePage = pathname === '/'
-const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`)
+const isActive = (href: string) =>
+  href === '/' ? isHomePage : pathname === href || pathname.startsWith(`${href}/`)
 const currentLocation = (href: string) =>
-  isActive(href) ? (pathname.replace(/\/$/, '') === href ? 'page' : 'location') : undefined
+  isActive(href) ? ((pathname === href || pathname.replace(/\/$/, '') === href) ? 'page' : 'location') : undefined
 
 const navItems = [
+  { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/articles', label: 'Articles' },
   { href: '/projects', label: 'Projects' },
@@ -91,6 +93,7 @@ const navItems = [
                   <a
                     href={item.href}
                     aria-current={currentLocation(item.href)}
+                    aria-label={item.href === '/' ? 'Home' : undefined}
                     class:list={[
                       'block rounded-full px-3 py-1.5 transition-colors',
                       isActive(item.href)
@@ -98,8 +101,11 @@ const navItems = [
                         : 'hover:text-teal-500 dark:hover:text-teal-400',
                     ]}
                   >
-                    {item.label}
-
+                    {item.href === '/' ? (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-5 w-5">
+                        <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" />
+                      </svg>
+                    ) : item.label}
                   </a>
                 </li>
               ))}
