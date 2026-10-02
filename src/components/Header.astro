@@ -23,7 +23,7 @@ const navItems = [
       <div class="relative flex items-center gap-4">
         <div class="flex flex-1">
           <div class="h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
-            <a href="/" aria-label="Home" class="pointer-events-auto">
+            <a href="/" data-astro-prefetch="false" aria-label="Home" class="pointer-events-auto">
               <img
                 src="https://jr-w-a.juanrcifuentes.com/assets/avatar.jpg"
                 alt=""
@@ -54,6 +54,7 @@ const navItems = [
                 <li>
                   <a
                     href={item.href}
+              data-astro-prefetch="false"
                     aria-current={currentLocation(item.href)}
                     aria-label={item.href === '/' ? 'Home' : undefined}
                     class:list={[
@@ -128,6 +129,7 @@ const navItems = [
           <li>
             <a
               href={item.href}
+              data-astro-prefetch="false"
               aria-current={currentLocation(item.href)}
               class:list={[
                 'block rounded-full px-3 py-2 transition-colors',
