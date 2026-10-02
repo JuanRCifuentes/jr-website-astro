@@ -168,8 +168,8 @@ const navItems = [
     border-radius: 0;
   }
   @media (width < 48rem) {
-    .header-background { visibility: hidden; }
-    #site-header[data-expanded='true'] .header-background { visibility: visible; }
+    .header-shell { position: absolute; }
+    .header-background { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     .header-background { transition: none; }
