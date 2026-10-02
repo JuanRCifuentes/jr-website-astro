@@ -140,6 +140,12 @@ const navItems = [
         ))}
       </ul>
     </nav>
+    <div class="mt-5 border-t border-border pt-4">
+      <button id="swap-mobile-controls" type="button" aria-pressed="false" class="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-3 text-sm text-heading hover:bg-page">
+        <span>Swap button sides</span>
+        <span id="mobile-menu-side" class="text-copy">Menu on right</span>
+      </button>
+    </div>
   </div>
 </dialog>
 
@@ -169,11 +175,15 @@ const navItems = [
     border-radius: 0;
   }
   .mobile-menu-panel {
-    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
     bottom: calc(88px + env(safe-area-inset-bottom));
     width: min(320px, calc(100% - 32px));
     max-height: calc(100dvh - 120px - env(safe-area-inset-bottom));
     overflow-y: auto;
+  }
+  :global(html[data-menu-side='left']) .mobile-menu-panel {
+    right: auto;
+    left: max(16px, env(safe-area-inset-left));
   }
   .mobile-corner-button {
     display: flex;
@@ -183,8 +193,8 @@ const navItems = [
     height: 56px;
     border-radius: 50%;
     background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    box-shadow: 0 4px 16px rgb(16 42 67 / 10%);
+    border: 2px solid var(--color-accent);
+    box-shadow: 0 6px 20px rgb(16 42 67 / 22%);
   }
   @media (width >= 48rem) {
     .mobile-corner-button { display: none; }
@@ -194,10 +204,12 @@ const navItems = [
     #mobile-menu-toggle, .mobile-theme-button {
       position: fixed;
       bottom: calc(16px + env(safe-area-inset-bottom));
+      border: 2px solid var(--color-accent);
+      box-shadow: 0 6px 20px rgb(16 42 67 / 22%);
     }
-    #mobile-menu-toggle { left: max(16px, env(safe-area-inset-left)); }
+    #mobile-menu-toggle { right: max(16px, env(safe-area-inset-right)); }
     .mobile-theme-button {
-      right: max(16px, env(safe-area-inset-right));
+      left: max(16px, env(safe-area-inset-left));
       display: flex;
       align-items: center;
       justify-content: center;
@@ -205,6 +217,14 @@ const navItems = [
       height: 56px;
       padding: 0;
       background: var(--color-surface);
+    }
+    :global(html[data-menu-side='left']) #mobile-menu-toggle {
+      right: auto;
+      left: max(16px, env(safe-area-inset-left));
+    }
+    :global(html[data-menu-side='left']) .mobile-theme-button {
+      left: auto;
+      right: max(16px, env(safe-area-inset-right));
     }
     .header-shell { position: absolute; }
     .header-background { display: none; }
@@ -226,12 +246,17 @@ const navItems = [
     root.classList.toggle('dark', theme === 'dark' || (theme === 'system' && systemDark))
   }
 
+  function initMobileControls(root = document.documentElement) {
+    root.dataset.menuSide = localStorage.getItem('menu-side') === 'left' ? 'left' : 'right'
+  }
+
   // Module scripts run once; bind page-specific behavior after every navigation.
   let pageController: AbortController | undefined
 
   document.addEventListener('astro:before-swap', (event) => {
     pageController?.abort()
     initTheme(event.newDocument.documentElement)
+    initMobileControls(event.newDocument.documentElement)
   })
 
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
@@ -243,6 +268,22 @@ const navItems = [
     pageController = new AbortController()
     const { signal } = pageController
     initTheme()
+    initMobileControls()
+
+    const swapButton = document.getElementById('swap-mobile-controls')
+    const sideLabel = document.getElementById('mobile-menu-side')
+    const updateSideLabel = () => {
+      const left = document.documentElement.dataset.menuSide === 'left'
+      swapButton?.setAttribute('aria-pressed', String(left))
+      if (sideLabel) sideLabel.textContent = left ? 'Menu on left' : 'Menu on right'
+    }
+    updateSideLabel()
+    swapButton?.addEventListener('click', () => {
+      const side = document.documentElement.dataset.menuSide === 'left' ? 'right' : 'left'
+      localStorage.setItem('menu-side', side)
+      initMobileControls()
+      updateSideLabel()
+    }, { signal })
 
     document.getElementById('theme-toggle')?.addEventListener('click', () => {
       const isDark = document.documentElement.classList.toggle('dark')

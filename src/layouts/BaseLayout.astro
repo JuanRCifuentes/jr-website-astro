@@ -25,6 +25,7 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
+      document.documentElement.dataset.menuSide = localStorage.getItem('menu-side') === 'left' ? 'left' : 'right'
       // Prevent flash of wrong theme
       const theme = localStorage.getItem('theme') || 'system'
       const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches
