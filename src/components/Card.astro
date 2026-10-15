@@ -7,21 +7,9 @@ interface Props {
 const { as: Tag = 'div', class: className } = Astro.props
 ---
 
-<Fragment>
-  {Tag === 'article' ? (
-    <article class:list={[className, 'card']}>
-      <slot />
-    </article>
-  ) : Tag === 'li' ? (
-    <li class:list={[className, 'card']}>
-      <slot />
-    </li>
-  ) : (
-    <div class:list={[className, 'card']}>
-      <slot />
-    </div>
-  )}
-</Fragment>
+<Tag class:list={[className, 'card']}>
+  <slot />
+</Tag>
 
 <style>
   .card {

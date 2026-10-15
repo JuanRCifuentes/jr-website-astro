@@ -1,8 +1,4 @@
 ---
-interface Props {
-  class?: string
-}
-
 const { class: className } = Astro.props
 ---
 
@@ -20,12 +16,10 @@ const { class: className } = Astro.props
     @media (width >= 40rem) {
       padding-inline: 2rem;
     }
-
     @media (width >= 64rem) {
       padding-inline: 3rem;
     }
   }
-
   .container-inner-content {
     margin-inline: auto;
     max-width: 42rem;
