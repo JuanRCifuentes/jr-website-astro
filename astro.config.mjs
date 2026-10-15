@@ -4,8 +4,6 @@ import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
-import cloudflare from "@astrojs/cloudflare";
-
 // https://astro.build/config
 export default defineConfig({
   site: "https://juanrcifuentes.com",
@@ -16,6 +14,4 @@ export default defineConfig({
   vite: {
       plugins: [tailwindcss()],
   },
-
-  adapter: cloudflare(),
 });
