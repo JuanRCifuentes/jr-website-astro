@@ -80,11 +80,6 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
   :global(body) {
     display: flex;
     height: 100%;
-
-    /* Below md, global.css paints the body with the surface colour instead. */
-    @media (width >= 48rem) {
-      background-color: var(--color-page);
-    }
   }
 
   .page-frame {

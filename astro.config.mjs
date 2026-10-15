@@ -1,6 +1,5 @@
 // @ts-check
 import { defineConfig } from "astro/config";
-import tailwindcss from "@tailwindcss/vite";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 
@@ -13,7 +12,6 @@ export default defineConfig({
   prefetch: { prefetchAll: true, defaultStrategy: "load" },
 
   vite: {
-      plugins: [tailwindcss()],
       // Without the Cloudflare adapter the CSS isn't lowered for older browsers
       // by default, which drops the -webkit- prefixes Safari < 18 needs
       // (e.g. backdrop-filter). Pin Vite's "baseline widely available" targets.
