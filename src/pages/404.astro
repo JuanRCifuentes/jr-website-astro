@@ -5,20 +5,71 @@ import Button from '../components/Button.astro'
 ---
 
 <BaseLayout title="Page not found - Juan R. Cifuentes">
-  <Container class="flex h-full items-center pt-16 sm:pt-32">
-    <div class="flex flex-col items-center">
-      <p class="text-base font-semibold text-copy">
+  <Container class="not-found">
+    <div class="not-found-content">
+      <p class="not-found-code">
         404
       </p>
-      <h1 class="mt-4 text-4xl font-bold tracking-tight text-heading sm:text-5xl">
+      <h1 class="not-found-title">
         Page not found
       </h1>
-      <p class="mt-4 text-base text-copy">
+      <p class="not-found-text">
         Sorry, we couldn't find the page you're looking for.
       </p>
-      <Button href="/" variant="secondary" class="mt-4">
+      <Button href="/" variant="secondary" class="not-found-button">
         Go back home
       </Button>
     </div>
   </Container>
 </BaseLayout>
+
+<style>
+.not-found {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-top: 4rem;
+
+  @media (width >= 40rem) {
+    padding-top: 8rem;
+  }
+}
+
+.not-found-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.not-found-code {
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  font-weight: 600;
+  color: var(--color-copy);
+}
+
+.not-found-title {
+  margin-top: 1rem;
+  font-size: var(--text-4xl);
+  line-height: var(--text-4xl--line-height);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  color: var(--color-heading);
+
+  @media (width >= 40rem) {
+    font-size: var(--text-5xl);
+    line-height: var(--text-5xl--line-height);
+  }
+}
+
+.not-found-text {
+  margin-top: 1rem;
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  color: var(--color-copy);
+}
+
+.not-found-button {
+  margin-top: 1rem;
+}
+</style>

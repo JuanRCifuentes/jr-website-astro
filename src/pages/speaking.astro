@@ -14,9 +14,9 @@ import CardEyebrow from '../components/CardEyebrow.astro'
     title="I've spoken at events all around the world and been interviewed for many podcasts."
     intro="One of my favorite ways to share my ideas is live on stage, where there's so much more communication bandwidth than there is in writing, and I love podcast interviews because they give me the opportunity to answer questions instead of just present my opinions."
   >
-    <div class="space-y-20">
+    <div class="page-sections">
       <Section title="Conferences">
-        <div class="space-y-16">
+        <div class="card-list">
           <Card as="article">
             <CardTitle as="h3" href="#">In space, no one can watch you stream — until now</CardTitle>
             <CardEyebrow decorate>SysConf 2021</CardEyebrow>
@@ -32,7 +32,7 @@ import CardEyebrow from '../components/CardEyebrow.astro'
         </div>
       </Section>
       <Section title="Podcasts">
-        <div class="space-y-16">
+        <div class="card-list">
           <Card as="article">
             <CardTitle as="h3" href="#">Using design as a competitive advantage</CardTitle>
             <CardEyebrow decorate>Encoding Design, July 2022</CardEyebrow>
@@ -56,3 +56,13 @@ import CardEyebrow from '../components/CardEyebrow.astro'
     </div>
   </SimpleLayout>
 </BaseLayout>
+
+<style>
+.page-sections > :global(:not(:last-child)) {
+  margin-block-end: 5rem;
+}
+
+.card-list > :global(:not(:last-child)) {
+  margin-block-end: 4rem;
+}
+</style>
