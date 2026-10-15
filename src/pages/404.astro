@@ -7,16 +7,16 @@ import Button from '../components/Button.astro'
 <BaseLayout title="Page not found - Juan R. Cifuentes">
   <Container class="not-found">
     <div class="not-found-content">
-      <p class="not-found-code">
+      <p class="code">
         404
       </p>
-      <h1 class="not-found-title">
+      <h1>
         Page not found
       </h1>
-      <p class="not-found-text">
+      <p>
         Sorry, we couldn't find the page you're looking for.
       </p>
-      <Button href="/" variant="secondary" class="not-found-button">
+      <Button href="/" variant="secondary">
         Go back home
       </Button>
     </div>
@@ -39,17 +39,20 @@ import Button from '../components/Button.astro'
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 1rem;
 }
 
-.not-found-code {
+p {
   font-size: var(--text-base);
   line-height: var(--text-base--line-height);
-  font-weight: 600;
   color: var(--color-copy);
 }
 
-.not-found-title {
-  margin-top: 1rem;
+.code {
+  font-weight: 600;
+}
+
+h1 {
   font-size: var(--text-4xl);
   line-height: var(--text-4xl--line-height);
   font-weight: 700;
@@ -60,16 +63,5 @@ import Button from '../components/Button.astro'
     font-size: var(--text-5xl);
     line-height: var(--text-5xl--line-height);
   }
-}
-
-.not-found-text {
-  margin-top: 1rem;
-  font-size: var(--text-base);
-  line-height: var(--text-base--line-height);
-  color: var(--color-copy);
-}
-
-.not-found-button {
-  margin-top: 1rem;
 }
 </style>

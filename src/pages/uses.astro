@@ -136,11 +136,17 @@ import CardDescription from '../components/CardDescription.astro'
 </BaseLayout>
 
 <style>
-.page-sections > :global(:not(:last-child)) {
-  margin-block-end: 5rem;
+.page-sections,
+.card-list {
+  display: flex;
+  flex-direction: column;
 }
 
-.card-list > :global(:not(:last-child)) {
-  margin-block-end: 4rem;
+.page-sections {
+  gap: 5rem;
+}
+
+.card-list {
+  gap: 4rem;
 }
 </style>
