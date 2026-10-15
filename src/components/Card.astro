@@ -9,16 +9,25 @@ const { as: Tag = 'div', class: className } = Astro.props
 
 <Fragment>
   {Tag === 'article' ? (
-    <article class:list={[className, 'group relative flex flex-col items-start']}>
+    <article class:list={[className, 'card']}>
       <slot />
     </article>
   ) : Tag === 'li' ? (
-    <li class:list={[className, 'group relative flex flex-col items-start']}>
+    <li class:list={[className, 'card']}>
       <slot />
     </li>
   ) : (
-    <div class:list={[className, 'group relative flex flex-col items-start']}>
+    <div class:list={[className, 'card']}>
       <slot />
     </div>
   )}
 </Fragment>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+</style>

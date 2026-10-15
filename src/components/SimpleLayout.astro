@@ -10,18 +10,62 @@ const { title, intro } = Astro.props
 const hasContent = Astro.slots.has('default')
 ---
 
-<Container class="mt-16 sm:mt-32">
-  <header class="max-w-2xl">
-    <h1 class="text-4xl font-bold tracking-tight text-heading sm:text-5xl">
+<Container class="simple-layout">
+  <header class="simple-layout-header">
+    <h1 class="simple-layout-title">
       {title}
     </h1>
-    <p class="mt-6 text-base text-copy">
+    <p class="simple-layout-intro">
       {intro}
     </p>
   </header>
   {hasContent && (
-    <div class="mt-16 sm:mt-20">
+    <div class="simple-layout-content">
       <slot />
     </div>
   )}
 </Container>
+
+<style>
+  .simple-layout {
+    margin-top: 4rem;
+  }
+
+  .simple-layout-header {
+    max-width: 42rem;
+  }
+
+  .simple-layout-title {
+    font-size: var(--text-4xl);
+    line-height: var(--text-4xl--line-height);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-heading);
+  }
+
+  .simple-layout-intro {
+    margin-top: 1.5rem;
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    color: var(--color-copy);
+  }
+
+  .simple-layout-content {
+    margin-top: 4rem;
+  }
+
+  @media (width >= 40rem) {
+    .simple-layout {
+      margin-top: 8rem;
+    }
+
+    .simple-layout-title {
+      font-size: var(--text-5xl);
+      line-height: var(--text-5xl--line-height);
+    }
+
+    .simple-layout-content {
+      margin-top: 5rem;
+    }
+  }
+</style>

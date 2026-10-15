@@ -12,32 +12,62 @@ const { as: Tag = 'p', decorate = false, class: className, dateTime } = Astro.pr
 {Tag === 'time' ? (
   <time
     datetime={dateTime}
-    class:list={[
-      className,
-      'relative z-10 order-first mb-3 flex items-center text-sm text-copy',
-      decorate && 'pl-3.5',
-    ]}
+    class:list={[className, 'card-eyebrow', decorate && 'card-eyebrow-decorated']}
   >
     {decorate && (
-      <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
-        <span class="h-4 w-0.5 rounded-full bg-accent"></span>
+      <span class="card-eyebrow-decoration" aria-hidden="true">
+        <span class="card-eyebrow-bar"></span>
       </span>
     )}
     <slot />
   </time>
 ) : (
   <p
-    class:list={[
-      className,
-      'relative z-10 order-first mb-3 flex items-center text-sm text-copy',
-      decorate && 'pl-3.5',
-    ]}
+    class:list={[className, 'card-eyebrow', decorate && 'card-eyebrow-decorated']}
   >
     {decorate && (
-      <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
-        <span class="h-4 w-0.5 rounded-full bg-accent"></span>
+      <span class="card-eyebrow-decoration" aria-hidden="true">
+        <span class="card-eyebrow-bar"></span>
       </span>
     )}
     <slot />
   </p>
 )}
+
+<style>
+  .card-eyebrow {
+    position: relative;
+    z-index: 10;
+    order: -9999;
+    margin-bottom: 0.75rem;
+    align-items: center;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--color-copy);
+  }
+
+  /* :where() keeps this at zero specificity so a page-supplied class
+     (e.g. `display: none` at a breakpoint) always wins, whatever the order. */
+  :where(.card-eyebrow) {
+    display: flex;
+  }
+
+  .card-eyebrow-decorated {
+    padding-left: 0.875rem;
+  }
+
+  .card-eyebrow-decoration {
+    position: absolute;
+    inset-block: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .card-eyebrow-bar {
+    height: 1rem;
+    width: 0.125rem;
+    border-radius: 3.40282e38px;
+    background-color: var(--color-accent);
+  }
+</style>

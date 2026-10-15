@@ -6,8 +6,54 @@ interface Props {
 const { href } = Astro.props
 ---
 
-<div class="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-page opacity-0 transition group-hover:scale-100 group-hover:opacity-100 sm:-inset-x-6 sm:rounded-2xl"></div>
+<div class="card-link-backdrop"></div>
 <a href={href}>
-  <span class="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl"></span>
-  <span class="relative z-10"><slot /></span>
+  <span class="card-link-hit-area"></span>
+  <span class="card-link-label"><slot /></span>
 </a>
+
+<style>
+  .card-link-backdrop {
+    position: absolute;
+    inset-block: -1.5rem;
+    inset-inline: -1rem;
+    z-index: 0;
+    scale: 95%;
+    background-color: var(--color-page);
+    opacity: 0;
+    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, translate, scale, rotate, filter, backdrop-filter;
+    transition-timing-function: var(--ease);
+    transition-duration: var(--duration);
+  }
+
+  .card-link-hit-area {
+    position: absolute;
+    inset-block: -1.5rem;
+    inset-inline: -1rem;
+    z-index: 20;
+  }
+
+  .card-link-label {
+    position: relative;
+    z-index: 10;
+  }
+
+  @media (width >= 40rem) {
+    .card-link-backdrop {
+      inset-inline: -1.5rem;
+      border-radius: var(--radius-2xl);
+    }
+
+    .card-link-hit-area {
+      inset-inline: -1.5rem;
+      border-radius: var(--radius-2xl);
+    }
+  }
+
+  @media (hover: hover) {
+    :global(.card:hover) .card-link-backdrop {
+      scale: 100%;
+      opacity: 1;
+    }
+  }
+</style>

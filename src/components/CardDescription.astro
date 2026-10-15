@@ -1,3 +1,14 @@
-<p class="relative z-10 mt-2 text-sm text-copy">
+<p class="card-description">
   <slot />
 </p>
+
+<style>
+  .card-description {
+    position: relative;
+    z-index: 10;
+    margin-top: 0.5rem;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--color-copy);
+  }
+</style>
