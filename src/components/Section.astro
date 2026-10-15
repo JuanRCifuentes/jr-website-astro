@@ -12,7 +12,7 @@ const id = `section-${title.toLowerCase().replace(/\s+/g, '-')}`
     <h2 id={id} class="section-title">
       {title}
     </h2>
-    <div class="section-content">
+    <div>
       <slot />
     </div>
   </div>
@@ -22,30 +22,22 @@ const id = `section-${title.toLowerCase().replace(/\s+/g, '-')}`
   .section-grid {
     display: grid;
     max-width: 48rem;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
     align-items: baseline;
-    row-gap: 2rem;
+    gap: 2rem 0;
   }
-
   .section-title {
     font-size: var(--text-sm);
     line-height: var(--text-sm--line-height);
     font-weight: 600;
     color: var(--color-heading);
   }
-
   @media (width >= 48rem) {
     .section {
       border-left: 1px solid var(--color-border);
       padding-left: 1.5rem;
     }
-
     .section-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-
-    .section-content {
-      grid-column: span 3 / span 3;
+      grid-template-columns: 1fr 3fr;
     }
   }
 </style>

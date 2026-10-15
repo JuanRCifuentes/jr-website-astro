@@ -9,30 +9,12 @@ interface Props {
 const { as: Tag = 'p', decorate = false, class: className, dateTime } = Astro.props
 ---
 
-{Tag === 'time' ? (
-  <time
-    datetime={dateTime}
-    class:list={[className, 'card-eyebrow', decorate && 'card-eyebrow-decorated']}
-  >
-    {decorate && (
-      <span class="card-eyebrow-decoration" aria-hidden="true">
-        <span class="card-eyebrow-bar"></span>
-      </span>
-    )}
-    <slot />
-  </time>
-) : (
-  <p
-    class:list={[className, 'card-eyebrow', decorate && 'card-eyebrow-decorated']}
-  >
-    {decorate && (
-      <span class="card-eyebrow-decoration" aria-hidden="true">
-        <span class="card-eyebrow-bar"></span>
-      </span>
-    )}
-    <slot />
-  </p>
-)}
+<Tag
+  datetime={Tag === 'time' ? dateTime : undefined}
+  class:list={[className, 'card-eyebrow', decorate && 'card-eyebrow-decorated']}
+>
+  <slot />
+</Tag>
 
 <style>
   .card-eyebrow {
@@ -45,29 +27,21 @@ const { as: Tag = 'p', decorate = false, class: className, dateTime } = Astro.pr
     line-height: var(--text-sm--line-height);
     color: var(--color-copy);
   }
-
-  /* :where() keeps this at zero specificity so a page-supplied class
-     (e.g. `display: none` at a breakpoint) always wins, whatever the order. */
+  /* :where() keeps display at zero specificity so a page-supplied class can hide it. */
   :where(.card-eyebrow) {
     display: flex;
   }
-
   .card-eyebrow-decorated {
     padding-left: 0.875rem;
-  }
 
-  .card-eyebrow-decoration {
-    position: absolute;
-    inset-block: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-  }
-
-  .card-eyebrow-bar {
-    height: 1rem;
-    width: 0.125rem;
-    border-radius: var(--radius-full);
-    background-color: var(--color-accent);
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 0.125rem;
+      height: 1rem;
+      border-radius: var(--radius-full);
+      background-color: var(--color-accent);
+    }
   }
 </style>

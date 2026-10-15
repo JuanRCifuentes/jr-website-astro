@@ -13,47 +13,31 @@ const { href } = Astro.props
 </a>
 
 <style>
-  .card-link-backdrop {
+  .card-link-backdrop,
+  .card-link-hit-area {
     position: absolute;
-    inset-block: -1.5rem;
-    inset-inline: -1rem;
-    z-index: 0;
+    inset: -1.5rem -1rem;
+    border-radius: var(--radius-2xl);
+
+    @media (width >= 40rem) {
+      inset-inline: -1.5rem;
+    }
+  }
+  .card-link-backdrop {
     scale: 95%;
     background-color: var(--color-page);
     opacity: 0;
-    transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, translate, scale, rotate, filter, backdrop-filter;
-    transition-timing-function: var(--ease);
-    transition-duration: var(--duration);
+    transition: opacity var(--duration), scale var(--duration);
   }
-
   .card-link-hit-area {
-    position: absolute;
-    inset-block: -1.5rem;
-    inset-inline: -1rem;
     z-index: 20;
   }
-
   .card-link-label {
     position: relative;
     z-index: 10;
   }
-
-  @media (width >= 40rem) {
-    .card-link-backdrop {
-      inset-inline: -1.5rem;
-      border-radius: var(--radius-2xl);
-    }
-
-    .card-link-hit-area {
-      inset-inline: -1.5rem;
-      border-radius: var(--radius-2xl);
-    }
-  }
-
-  @media (hover: hover) {
-    :global(.card:hover) .card-link-backdrop {
-      scale: 100%;
-      opacity: 1;
-    }
+  :global(.card:hover) .card-link-backdrop {
+    scale: 100%;
+    opacity: 1;
   }
 </style>
