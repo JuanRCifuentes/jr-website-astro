@@ -22,7 +22,7 @@ const articles = (await getCollection('articles'))
       <div class="article-list-inner">
         {articles.map((article) => (
           <article class="article-item">
-            <Card class="article-card">
+            <Card>
               <CardTitle href={`/articles/${article.id}`}>
                 {article.data.title}
               </CardTitle>
@@ -52,6 +52,13 @@ const articles = (await getCollection('articles'))
 </BaseLayout>
 
 <style>
+.article-list-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  max-width: 48rem;
+}
+
 @media (width >= 48rem) {
   .article-list {
     border-left: 1px solid var(--color-border);
@@ -60,33 +67,16 @@ const articles = (await getCollection('articles'))
 
   .article-item {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: 1fr 3fr;
     align-items: baseline;
   }
 
-  .article-card {
-    grid-column: span 3 / span 3;
-  }
-}
-
-.article-list-inner {
-  display: flex;
-  flex-direction: column;
-  max-width: 48rem;
-}
-
-.article-list-inner > :global(:not(:last-child)) {
-  margin-block-end: 4rem;
-}
-
-/* CardEyebrow sets display: flex itself; doubled selectors make these win deliberately. */
-.article-date-inline.article-date-inline {
-  @media (width >= 48rem) {
+  .article-date-inline {
     display: none;
   }
 }
 
-.article-date-side.article-date-side {
+.article-date-side {
   margin-top: 0.25rem;
 
   @media (width < 48rem) {
