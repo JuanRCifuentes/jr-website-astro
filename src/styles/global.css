@@ -77,6 +77,11 @@
   --tw-prose-td-borders: var(--color-border);
 }
 
+/* Controls are a button fill in dark mode, too dim for link text on the page. */
+.dark .prose {
+  --tw-prose-links: var(--color-heading);
+}
+
 /* Safari uses the document canvas behind its translucent browser controls. */
 html {
   background-color: var(--color-page);
