@@ -7,12 +7,52 @@ interface Props {
 const { class: className, style, ...rest } = Astro.props
 ---
 
-<div class:list={['sm:px-8', className]} style={style} {...rest}>
-  <div class="mx-auto w-full max-w-7xl lg:px-8">
-    <div class="relative px-4 sm:px-8 lg:px-12">
-      <div class="mx-auto max-w-2xl lg:max-w-5xl">
+<div class:list={['site-container', className]} style={style} {...rest}>
+  <div class="site-container-wide">
+    <div class="site-container-gutter">
+      <div class="site-container-content">
         <slot />
       </div>
     </div>
   </div>
 </div>
+
+<style>
+  .site-container {
+    @media (width >= 40rem) {
+      padding-inline: 2rem;
+    }
+  }
+
+  .site-container-wide {
+    margin-inline: auto;
+    width: 100%;
+    max-width: 80rem;
+
+    @media (width >= 64rem) {
+      padding-inline: 2rem;
+    }
+  }
+
+  .site-container-gutter {
+    position: relative;
+    padding-inline: 1rem;
+
+    @media (width >= 40rem) {
+      padding-inline: 2rem;
+    }
+
+    @media (width >= 64rem) {
+      padding-inline: 3rem;
+    }
+  }
+
+  .site-container-content {
+    margin-inline: auto;
+    max-width: 42rem;
+
+    @media (width >= 64rem) {
+      max-width: 64rem;
+    }
+  }
+</style>
