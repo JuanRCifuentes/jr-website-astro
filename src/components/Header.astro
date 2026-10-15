@@ -16,40 +16,40 @@ const navItems = [
 ]
 ---
 
-<header id="site-header" class="pointer-events-none relative z-50 h-16 flex-none">
-  <div class="header-shell fixed inset-x-0 top-0">
+<header id="site-header" class="site-header">
+  <div class="header-shell">
     <div class="header-background" aria-hidden="true"></div>
-    <div class="header-controls mx-auto max-w-7xl px-4 sm:px-16 lg:px-28">
-      <div class="relative flex items-center gap-4">
-        <div class="flex flex-1">
-          <div class="h-10 w-10 rounded-full bg-surface/90 p-0.5 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm">
-            <a href="/" data-astro-prefetch="false" aria-label="Home" class="pointer-events-auto">
+    <div class="header-controls">
+      <div class="header-row">
+        <div class="header-start">
+          <div class="avatar-frame">
+            <a href="/" data-astro-prefetch="false" aria-label="Home" class="avatar-link">
               <img
                 src="https://jr-w-a.juanrcifuentes.com/assets/avatar.jpg"
                 alt=""
-                class="rounded-full bg-page object-cover h-9 w-9"
+                class="avatar"
               />
             </a>
           </div>
         </div>
-        <div class="flex flex-1 justify-end md:justify-center">
+        <div class="header-middle">
           <!-- Mobile controls stay within thumb reach, above the browser UI. -->
           <button
             id="mobile-menu-toggle"
-            class="mobile-corner-button pointer-events-auto text-heading md:hidden"
+            class="mobile-corner-button"
             type="button"
             aria-label="Open navigation"
             aria-haspopup="dialog"
             aria-controls="mobile-nav-dialog"
             onclick="document.getElementById('mobile-nav-dialog').showModal()"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" class="h-6 w-6">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true">
               <path d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
           <!-- Desktop Navigation -->
-          <nav id="desktop-nav" class="pointer-events-auto hidden md:block">
-            <ul class="flex rounded-full p-1 text-sm font-medium text-heading">
+          <nav id="desktop-nav" class="desktop-nav">
+            <ul class="desktop-nav-list">
               {navItems.map((item) => (
                 <li>
                   <a
@@ -58,18 +58,14 @@ const navItems = [
                     aria-current={currentLocation(item.href)}
                     aria-label={item.href === '/' ? 'Home' : undefined}
                     class:list={[
-                      'flex items-center justify-center rounded-full px-3 py-1.5 transition-colors',
-                      isActive(item.href)
-                        ?'bg-control text-control-foreground'
-                        :'hover:text-accent-foreground',
+                      'desktop-nav-link',
+                      isActive(item.href) && 'is-active',
                     ]}
                   >
                     {item.href === '/' ? (
-                      <span class="flex h-6 items-center">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="h-5 w-5">
-                          <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" />
-                        </svg>
-                      </span>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m3 10 9-7 9 7M5 9v11h5v-6h4v6h5V9" />
+                      </svg>
                     ) : item.label}
                   </a>
                 </li>
@@ -77,34 +73,32 @@ const navItems = [
             </ul>
           </nav>
         </div>
-        <div class="flex justify-end md:flex-1">
-          <div class="pointer-events-auto">
-            <button
-              type="button"
-              id="theme-toggle"
-              aria-label="Toggle theme"
-              class="mobile-theme-button group rounded-full bg-surface/90 px-3 py-2 shadow-lg ring-1 shadow-zinc-800/5 ring-border/70 backdrop-blur-sm transition"
+        <div class="header-end">
+          <button
+            type="button"
+            id="theme-toggle"
+            aria-label="Toggle theme"
+            class="mobile-theme-button"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+              class="theme-icon theme-icon-light"
             >
-              <svg
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                aria-hidden="true"
-                class="h-6 w-6 fill-page stroke-copy transition group-hover:fill-border group-hover:stroke-control dark:hidden [@media(prefers-color-scheme:dark)]:fill-accent [@media(prefers-color-scheme:dark)]:stroke-accent [@media(prefers-color-scheme:dark)]:group-hover:fill-accent-foreground [@media(prefers-color-scheme:dark)]:group-hover:stroke-accent-foreground"
-              >
-                <path d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z" />
-                <path d="M12.25 3v1.5M21.5 12.25H20M18.791 18.791l-1.06-1.06M18.791 5.709l-1.06 1.06M12.25 20v1.5M4.5 12.25H3M6.77 6.77 5.709 5.709M6.77 17.73l-1.061 1.061" fill="none" />
-              </svg>
-              <svg
-                viewBox="0 0 24 24"
-                aria-hidden="true"
-                class="hidden h-6 w-6 fill-heading stroke-copy transition not-[@media_(prefers-color-scheme:dark)]:fill-accent/10 not-[@media_(prefers-color-scheme:dark)]:stroke-accent-foreground dark:block [@media(prefers-color-scheme:dark)]:group-hover:stroke-copy"
-              >
-                <path d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-              </svg>
-            </button>
-          </div>
+              <path d="M8 12.25A4.25 4.25 0 0 1 12.25 8v0a4.25 4.25 0 0 1 4.25 4.25v0a4.25 4.25 0 0 1-4.25 4.25v0A4.25 4.25 0 0 1 8 12.25v0Z" />
+              <path d="M12.25 3v1.5M21.5 12.25H20M18.791 18.791l-1.06-1.06M18.791 5.709l-1.06 1.06M12.25 20v1.5M4.5 12.25H3M6.77 6.77 5.709 5.709M6.77 17.73l-1.061 1.061" fill="none" />
+            </svg>
+            <svg
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+              class="theme-icon theme-icon-dark"
+            >
+              <path d="M17.25 16.22a6.937 6.937 0 0 1-9.47-9.47 7.451 7.451 0 1 0 9.47 9.47ZM12.75 7C17 7 17 2.75 17 2.75S17 7 21.25 7C17 7 17 11.25 17 11.25S17 7 12.75 7Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
@@ -112,19 +106,19 @@ const navItems = [
 </header>
 
 <!-- Mobile Navigation Dialog -->
-<dialog id="mobile-nav-dialog" class="m-0 border-none bg-transparent p-0 fixed inset-0 h-full w-full max-h-none max-w-none">
-  <div class="fixed inset-0 z-50 bg-zinc-800/40 backdrop-blur-xs dark:bg-black/80" onclick="document.getElementById('mobile-nav-dialog').close()"></div>
-  <div class="mobile-menu-panel fixed z-50 rounded-3xl bg-surface p-6 ring-1 ring-border/70">
-    <div class="flex flex-row-reverse items-center justify-between">
-      <button aria-label="Close menu" class="-m-2 flex h-11 w-11 items-center justify-center" onclick="document.getElementById('mobile-nav-dialog').close()">
-        <svg viewBox="0 0 24 24" aria-hidden="true" class="h-6 w-6 text-copy">
+<dialog id="mobile-nav-dialog" class="mobile-dialog">
+  <div class="mobile-backdrop" onclick="document.getElementById('mobile-nav-dialog').close()"></div>
+  <div class="mobile-menu-panel">
+    <div class="mobile-menu-header">
+      <button aria-label="Close menu" class="mobile-close-button" onclick="document.getElementById('mobile-nav-dialog').close()">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
           <path d="m17.25 6.75-10.5 10.5M6.75 6.75l10.5 10.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
       </button>
-      <h2 class="text-sm font-medium text-copy">Navigation</h2>
+      <h2 class="mobile-menu-title">Navigation</h2>
     </div>
-    <nav class="mt-6">
-      <ul class="-mx-3 -my-2 space-y-1 text-base text-heading">
+    <nav class="mobile-nav">
+      <ul class="mobile-nav-list">
         {navItems.map((item) => (
           <li>
             <a
@@ -132,43 +126,182 @@ const navItems = [
               data-astro-prefetch="false"
               aria-current={currentLocation(item.href)}
               class:list={[
-                'block rounded-full px-3 py-2 transition-colors',
-                isActive(item.href)
-                  ?'bg-control text-control-foreground'
-                  :'hover:text-accent-foreground',
+                'mobile-nav-link',
+                isActive(item.href) && 'is-active',
               ]}
             >{item.label}</a>
           </li>
         ))}
       </ul>
     </nav>
-    <div class="mt-5 border-t border-border pt-4">
-      <button id="swap-mobile-controls" type="button" aria-pressed="false" class="flex min-h-11 w-full items-center justify-between gap-3 rounded-xl px-3 text-sm text-heading hover:bg-page">
+    <div class="mobile-menu-footer">
+      <button id="swap-mobile-controls" type="button" aria-pressed="false" class="swap-button">
         <span>Swap button sides</span>
-        <span id="mobile-menu-side" class="text-copy">Menu on right</span>
+        <span id="mobile-menu-side" class="swap-label">Menu on right</span>
       </button>
     </div>
   </div>
 </dialog>
 
 <style>
-  .header-shell { height: 88px; }
-  .header-controls { padding-top: 24px; }
+  .site-header {
+    pointer-events: none;
+    position: relative;
+    z-index: 50;
+    height: 4rem;
+    flex: none;
+  }
+  .header-shell {
+    position: fixed;
+    inset-inline: 0;
+    top: 0;
+    height: 88px;
+  }
+  .header-controls {
+    margin-inline: auto;
+    max-width: 80rem;
+    padding: 24px 1rem 0;
+
+    @media (width >= 40rem) {
+      padding-inline: 4rem;
+    }
+    @media (width >= 64rem) {
+      padding-inline: 7rem;
+    }
+  }
+  .header-row {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .header-start,
+  .header-middle {
+    flex: 1;
+  }
+  .header-middle {
+    display: flex;
+    justify-content: flex-end;
+  }
+  .header-end {
+    display: flex;
+    justify-content: flex-end;
+  }
+  @media (width >= 48rem) {
+    .header-middle {
+      justify-content: center;
+    }
+    .header-end {
+      flex: 1;
+    }
+  }
+  .avatar-frame,
+  .mobile-theme-button {
+    border-radius: var(--radius-full);
+    background-color: color-mix(in oklab, var(--color-surface) 90%, transparent);
+    box-shadow: var(--ring), var(--shadow-lg);
+    backdrop-filter: blur(8px);
+  }
+  .avatar-frame {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0.125rem;
+  }
+  .avatar-link {
+    pointer-events: auto;
+  }
+  .avatar {
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: var(--radius-full);
+    background-color: var(--color-page);
+    object-fit: cover;
+  }
+  .desktop-nav {
+    display: none;
+    pointer-events: auto;
+  }
+  @media (width >= 48rem) {
+    .desktop-nav {
+      display: block;
+    }
+  }
+  .desktop-nav-list {
+    display: flex;
+    padding: 0.25rem;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    font-weight: 500;
+    color: var(--color-heading);
+  }
+  .desktop-nav-link,
+  .mobile-nav-link {
+    border-radius: var(--radius-full);
+    transition: var(--transition-colors);
+
+    &.is-active {
+      background-color: var(--color-control);
+      color: var(--color-control-foreground);
+    }
+    &:not(.is-active):hover {
+      color: var(--color-accent-foreground);
+    }
+  }
+  .desktop-nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+      margin-block: 0.125rem;
+    }
+  }
+
+  /* Theme toggle: the sun shows in light mode, the moon in dark mode. */
+  .mobile-theme-button {
+    padding: 0.5rem 0.75rem;
+    pointer-events: auto;
+  }
+  .theme-icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke: var(--color-copy);
+    transition: var(--transition-colors);
+  }
+  .theme-icon-light {
+    fill: var(--color-page);
+
+    .mobile-theme-button:hover & {
+      fill: var(--color-border);
+      stroke: var(--color-control);
+    }
+  }
+  .theme-icon-dark {
+    display: none;
+    fill: var(--color-heading);
+  }
+  :global(.dark) .theme-icon-light {
+    display: none;
+  }
+  :global(.dark) .theme-icon-dark {
+    display: block;
+  }
+
   .header-background {
     position: absolute;
     left: 50%;
     top: 24px;
     width: var(--nav-width, 406px);
     height: 44px;
-    transform: translateX(-50%);
-    border-radius: 999px;
+    translate: -50% 0;
+    border-radius: var(--radius-full);
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    box-shadow: 0 4px 12px rgb(24 24 27 / 5%);
-    transition: width 350ms cubic-bezier(.22, 1, .36, 1),
-      height 350ms cubic-bezier(.22, 1, .36, 1),
-      top 350ms cubic-bezier(.22, 1, .36, 1),
-      border-radius 350ms cubic-bezier(.22, 1, .36, 1);
+    box-shadow: var(--shadow-md);
+    transition: 350ms cubic-bezier(.22, 1, .36, 1);
+    transition-property: width, height, top, border-radius;
   }
   #site-header[data-expanded='true'] .header-background {
     width: 100%;
@@ -176,17 +309,12 @@ const navItems = [
     top: 0;
     border-radius: 0;
   }
-  .mobile-menu-panel {
-    right: max(16px, env(safe-area-inset-right));
-    bottom: calc(88px + env(safe-area-inset-bottom));
-    width: min(320px, calc(100% - 32px));
-    max-height: calc(100dvh - 120px - env(safe-area-inset-bottom));
-    overflow-y: auto;
+  @media (prefers-reduced-motion: reduce) {
+    .header-background {
+      transition: none;
+    }
   }
-  :global(html[data-menu-side='left']) .mobile-menu-panel {
-    right: auto;
-    left: max(16px, env(safe-area-inset-left));
-  }
+
   .mobile-corner-button {
     display: flex;
     align-items: center;
@@ -194,53 +322,163 @@ const navItems = [
     width: 56px;
     height: 56px;
     border-radius: 50%;
+    color: var(--color-heading);
+    pointer-events: auto;
 
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+    @media (width >= 48rem) {
+      display: none;
+    }
   }
-  @media (width >= 48rem) {
-    .mobile-corner-button { display: none; }
-  }
+
+  /* Phones: floating glass buttons at the bottom corners. */
   @media (width < 48rem) {
-    :global(body) { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
-    #mobile-menu-toggle, .mobile-theme-button {
+    :global(body) {
+      padding-bottom: calc(88px + env(safe-area-inset-bottom));
+    }
+    .header-shell {
+      position: absolute;
+    }
+    .header-background {
+      display: none;
+    }
+    .mobile-corner-button,
+    .mobile-theme-button {
       position: fixed;
       bottom: calc(16px + env(safe-area-inset-bottom));
-      background: rgb(246 248 251 / 72%);
-      border: 1px solid rgb(255 255 255 / 65%);
-      box-shadow: inset 0 1px 1px rgb(255 255 255 / 85%), 0 4px 16px rgb(16 42 67 / 14%);
-      -webkit-backdrop-filter: blur(20px) saturate(150%);
-      backdrop-filter: blur(20px) saturate(150%);
-    }
-    #mobile-menu-toggle { right: max(16px, env(safe-area-inset-right)); }
-    .mobile-theme-button {
-      left: max(16px, env(safe-area-inset-left));
       display: flex;
       align-items: center;
       justify-content: center;
       width: 56px;
       height: 56px;
       padding: 0;
+      background: rgb(246 248 251 / 72%);
+      border: 1px solid rgb(255 255 255 / 65%);
+      box-shadow: inset 0 1px 1px rgb(255 255 255 / 85%), 0 4px 16px rgb(16 42 67 / 14%);
+      backdrop-filter: blur(20px) saturate(150%);
     }
-    :global(.dark) #mobile-menu-toggle, :global(.dark) .mobile-theme-button {
+    .mobile-corner-button {
+      right: 1rem;
+    }
+    .mobile-theme-button {
+      left: 1rem;
+    }
+    :global(html[data-menu-side='left']) .mobile-corner-button {
+      right: auto;
+      left: 1rem;
+    }
+    :global(html[data-menu-side='left']) .mobile-theme-button {
+      left: auto;
+      right: 1rem;
+    }
+    :global(.dark) .mobile-corner-button,
+    :global(.dark) .mobile-theme-button {
       background: rgb(51 69 87 / 72%);
       border-color: rgb(255 255 255 / 14%);
       box-shadow: inset 0 1px 1px rgb(255 255 255 / 16%), 0 4px 16px rgb(0 0 0 / 22%);
     }
-    :global(html[data-menu-side='left']) #mobile-menu-toggle {
-      right: auto;
-      left: max(16px, env(safe-area-inset-left));
-    }
-    :global(html[data-menu-side='left']) .mobile-theme-button {
-      left: auto;
-      right: max(16px, env(safe-area-inset-right));
-    }
-    .header-shell { position: absolute; }
-    .header-background { display: none; }
   }
-  @media (prefers-reduced-motion: reduce) {
-    .header-background { transition: none; }
+
+  .mobile-dialog {
+    border: 0;
+    padding: 0;
+    background: none;
+
+    &::backdrop {
+      background: none;
+    }
   }
-  dialog#mobile-nav-dialog::backdrop {
-    background: transparent;
+  .mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    background-color: rgb(24 24 27 / 40%);
+    backdrop-filter: blur(4px);
+  }
+  :global(.dark) .mobile-backdrop {
+    background-color: rgb(0 0 0 / 80%);
+  }
+  .mobile-menu-panel {
+    position: fixed;
+    z-index: 50;
+    right: 1rem;
+    bottom: calc(88px + env(safe-area-inset-bottom));
+    width: min(320px, calc(100% - 32px));
+    max-height: calc(100dvh - 120px - env(safe-area-inset-bottom));
+    overflow-y: auto;
+    border-radius: var(--radius-3xl);
+    background-color: var(--color-surface);
+    padding: 1.5rem;
+    box-shadow: var(--ring);
+  }
+  :global(html[data-menu-side='left']) .mobile-menu-panel {
+    right: auto;
+    left: 1rem;
+  }
+  .mobile-menu-header {
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .mobile-close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    margin: -0.5rem;
+    color: var(--color-copy);
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
+  .mobile-menu-title {
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    font-weight: 500;
+    color: var(--color-copy);
+  }
+  .mobile-nav-list {
+    display: grid;
+    gap: 0.25rem;
+    margin: 1rem -0.75rem -0.5rem;
+    line-height: var(--text-base--line-height);
+    color: var(--color-heading);
+  }
+  .mobile-nav-link {
+    display: block;
+    padding: 0.5rem 0.75rem;
+  }
+  .mobile-menu-footer {
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--color-border);
+    padding-top: 1rem;
+  }
+  .swap-button {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 2.75rem;
+    border-radius: var(--radius-xl);
+    padding-inline: 0.75rem;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--color-heading);
+
+    &:hover {
+      background-color: var(--color-page);
+    }
+  }
+  .swap-label {
+    color: var(--color-copy);
   }
 </style>
 

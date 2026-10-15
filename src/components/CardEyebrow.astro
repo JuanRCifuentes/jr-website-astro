@@ -9,35 +9,39 @@ interface Props {
 const { as: Tag = 'p', decorate = false, class: className, dateTime } = Astro.props
 ---
 
-{Tag === 'time' ? (
-  <time
-    datetime={dateTime}
-    class:list={[
-      className,
-      'relative z-10 order-first mb-3 flex items-center text-sm text-copy',
-      decorate && 'pl-3.5',
-    ]}
-  >
-    {decorate && (
-      <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
-        <span class="h-4 w-0.5 rounded-full bg-accent"></span>
-      </span>
-    )}
-    <slot />
-  </time>
-) : (
-  <p
-    class:list={[
-      className,
-      'relative z-10 order-first mb-3 flex items-center text-sm text-copy',
-      decorate && 'pl-3.5',
-    ]}
-  >
-    {decorate && (
-      <span class="absolute inset-y-0 left-0 flex items-center" aria-hidden="true">
-        <span class="h-4 w-0.5 rounded-full bg-accent"></span>
-      </span>
-    )}
-    <slot />
-  </p>
-)}
+<Tag
+  datetime={Tag === 'time' ? dateTime : undefined}
+  class:list={[className, 'card-eyebrow', decorate && 'card-eyebrow-decorated']}
+>
+  <slot />
+</Tag>
+
+<style>
+  .card-eyebrow {
+    position: relative;
+    z-index: 10;
+    order: -9999;
+    margin-bottom: 0.75rem;
+    align-items: center;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+    color: var(--color-copy);
+  }
+  /* :where() keeps display at zero specificity so a page-supplied class can hide it. */
+  :where(.card-eyebrow) {
+    display: flex;
+  }
+  .card-eyebrow-decorated {
+    padding-left: 0.875rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      width: 0.125rem;
+      height: 1rem;
+      border-radius: var(--radius-full);
+      background-color: var(--color-accent);
+    }
+  }
+</style>

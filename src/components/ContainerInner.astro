@@ -1,13 +1,31 @@
 ---
-interface Props {
-  class?: string
-}
-
 const { class: className } = Astro.props
 ---
 
-<div class:list={['relative px-4 sm:px-8 lg:px-12', className]}>
-  <div class="mx-auto max-w-2xl lg:max-w-5xl">
+<div class:list={['container-inner', className]}>
+  <div class="container-inner-content">
     <slot />
   </div>
 </div>
+
+<style>
+  .container-inner {
+    position: relative;
+    padding-inline: 1rem;
+
+    @media (width >= 40rem) {
+      padding-inline: 2rem;
+    }
+    @media (width >= 64rem) {
+      padding-inline: 3rem;
+    }
+  }
+  .container-inner-content {
+    margin-inline: auto;
+    max-width: 42rem;
+
+    @media (width >= 64rem) {
+      max-width: 64rem;
+    }
+  }
+</style>

@@ -10,19 +10,19 @@ const navLinks = [
 ]
 ---
 
-<footer class="mt-32 flex-none">
+<footer class="site-footer">
   <ContainerOuter>
-    <div class="border-t border-border pt-10 pb-16">
+    <div class="footer-body">
       <ContainerInner>
-        <div class="flex flex-col items-center justify-between gap-6 md:flex-row">
-          <div class="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-heading">
+        <div class="footer-row">
+          <div class="footer-links">
             {navLinks.map((link) => (
-              <a href={link.href} data-astro-prefetch="false" class="transition hover:text-accent-foreground">
+              <a href={link.href} data-astro-prefetch="false" class="footer-link">
                 {link.label}
               </a>
             ))}
           </div>
-          <p class="text-sm text-copy">
+          <p class="footer-copyright">
             &copy; {new Date().getFullYear()} Juan R. Cifuentes. All rights reserved.
           </p>
         </div>
@@ -30,3 +30,45 @@ const navLinks = [
     </div>
   </ContainerOuter>
 </footer>
+
+<style>
+  .site-footer {
+    margin-top: 8rem;
+    flex: none;
+  }
+  .footer-body {
+    border-top: 1px solid var(--color-border);
+    padding-block: 2.5rem 4rem;
+  }
+  .footer-row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-size: var(--text-sm);
+    line-height: var(--text-sm--line-height);
+
+    @media (width >= 48rem) {
+      flex-direction: row;
+    }
+  }
+  .footer-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.25rem 1.5rem;
+    font-weight: 500;
+    color: var(--color-heading);
+  }
+  .footer-link {
+    transition: var(--transition-colors);
+
+    &:hover {
+      color: var(--color-accent-foreground);
+    }
+  }
+  .footer-copyright {
+    color: var(--color-copy);
+  }
+</style>

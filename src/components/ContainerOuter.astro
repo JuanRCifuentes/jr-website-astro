@@ -1,13 +1,25 @@
 ---
-interface Props {
-  class?: string
-}
-
 const { class: className } = Astro.props
 ---
 
-<div class:list={['sm:px-8', className]}>
-  <div class="mx-auto w-full max-w-7xl lg:px-8">
+<div class:list={['container-outer', className]}>
+  <div class="container-outer-content">
     <slot />
   </div>
 </div>
+
+<style>
+  .container-outer {
+    @media (width >= 40rem) {
+      padding-inline: 2rem;
+    }
+  }
+  .container-outer-content {
+    margin-inline: auto;
+    max-width: 80rem;
+
+    @media (width >= 64rem) {
+      padding-inline: 2rem;
+    }
+  }
+</style>

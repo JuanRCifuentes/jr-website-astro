@@ -18,18 +18,18 @@ const articles = (await getCollection('articles'))
     title="Writing on software design, company building, and the aerospace industry."
     intro="All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
   >
-    <div class="md:border-l md:border-border md:pl-6">
-      <div class="flex max-w-3xl flex-col space-y-16">
+    <div class="article-list">
+      <div class="article-list-inner">
         {articles.map((article) => (
-          <article class="md:grid md:grid-cols-4 md:items-baseline">
-            <Card class="md:col-span-3">
+          <article class="article-item">
+            <Card>
               <CardTitle href={`/articles/${article.id}`}>
                 {article.data.title}
               </CardTitle>
               <CardEyebrow
                 as="time"
                 dateTime={article.data.date}
-                class="md:hidden"
+                class="article-date-inline"
                 decorate
               >
                 {formatDate(article.data.date)}
@@ -40,7 +40,7 @@ const articles = (await getCollection('articles'))
             <CardEyebrow
               as="time"
               dateTime={article.data.date}
-              class="mt-1 max-md:hidden"
+              class="article-date-side"
             >
               {formatDate(article.data.date)}
             </CardEyebrow>
@@ -50,3 +50,37 @@ const articles = (await getCollection('articles'))
     </div>
   </SimpleLayout>
 </BaseLayout>
+
+<style>
+.article-list-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+  max-width: 48rem;
+}
+
+@media (width >= 48rem) {
+  .article-list {
+    border-left: 1px solid var(--color-border);
+    padding-left: 1.5rem;
+  }
+
+  .article-item {
+    display: grid;
+    grid-template-columns: 1fr 3fr;
+    align-items: baseline;
+  }
+
+  .article-date-inline {
+    display: none;
+  }
+}
+
+.article-date-side {
+  margin-top: 0.25rem;
+
+  @media (width < 48rem) {
+    display: none;
+  }
+}
+</style>

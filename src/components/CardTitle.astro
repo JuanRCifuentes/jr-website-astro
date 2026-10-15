@@ -9,12 +9,16 @@ interface Props {
 const { as: Tag = 'h2', href } = Astro.props
 ---
 
-{Tag === 'h3' ? (
-  <h3 class="text-base font-semibold tracking-tight text-heading">
-    {href ? <CardLink href={href}><slot /></CardLink> : <slot />}
-  </h3>
-) : (
-  <h2 class="text-base font-semibold tracking-tight text-heading">
-    {href ? <CardLink href={href}><slot /></CardLink> : <slot />}
-  </h2>
-)}
+<Tag class="card-title">
+  {href ? <CardLink href={href}><slot /></CardLink> : <slot />}
+</Tag>
+
+<style>
+  .card-title {
+    font-size: var(--text-base);
+    line-height: var(--text-base--line-height);
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+    color: var(--color-heading);
+  }
+</style>

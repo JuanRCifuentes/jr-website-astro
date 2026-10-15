@@ -7,18 +7,15 @@ interface Props {
 const { as: Tag = 'div', class: className } = Astro.props
 ---
 
-<Fragment>
-  {Tag === 'article' ? (
-    <article class:list={[className, 'group relative flex flex-col items-start']}>
-      <slot />
-    </article>
-  ) : Tag === 'li' ? (
-    <li class:list={[className, 'group relative flex flex-col items-start']}>
-      <slot />
-    </li>
-  ) : (
-    <div class:list={[className, 'group relative flex flex-col items-start']}>
-      <slot />
-    </div>
-  )}
-</Fragment>
+<Tag class:list={[className, 'card']}>
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+</style>

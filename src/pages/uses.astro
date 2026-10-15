@@ -12,9 +12,9 @@ import CardDescription from '../components/CardDescription.astro'
     title="Software I use, gadgets I love, and other things I recommend."
     intro="I get asked a lot about the things I use to build software, stay productive, or buy to fool myself into thinking I'm being productive when I'm really just procrastinating. Here's a big list of all of my favorite stuff."
   >
-    <div class="space-y-20">
+    <div class="page-sections">
       <Section title="Workstation">
-        <ul role="list" class="space-y-16">
+        <ul role="list" class="card-list">
           <Card as="li">
             <CardTitle as="h3">16" MacBook Pro, M1 Max, 64GB RAM (2021)</CardTitle>
             <CardDescription>
@@ -58,7 +58,7 @@ import CardDescription from '../components/CardDescription.astro'
         </ul>
       </Section>
       <Section title="Development tools">
-        <ul role="list" class="space-y-16">
+        <ul role="list" class="card-list">
           <Card as="li">
             <CardTitle as="h3">Sublime Text 4</CardTitle>
             <CardDescription>
@@ -85,7 +85,7 @@ import CardDescription from '../components/CardDescription.astro'
         </ul>
       </Section>
       <Section title="Design">
-        <ul role="list" class="space-y-16">
+        <ul role="list" class="card-list">
           <Card as="li">
             <CardTitle as="h3">Figma</CardTitle>
             <CardDescription>
@@ -97,7 +97,7 @@ import CardDescription from '../components/CardDescription.astro'
         </ul>
       </Section>
       <Section title="Productivity">
-        <ul role="list" class="space-y-16">
+        <ul role="list" class="card-list">
           <Card as="li">
             <CardTitle as="h3">Alfred</CardTitle>
             <CardDescription>
@@ -134,3 +134,19 @@ import CardDescription from '../components/CardDescription.astro'
     </div>
   </SimpleLayout>
 </BaseLayout>
+
+<style>
+.page-sections,
+.card-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.page-sections {
+  gap: 5rem;
+}
+
+.card-list {
+  gap: 4rem;
+}
+</style>

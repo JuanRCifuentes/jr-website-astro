@@ -18,7 +18,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
 ---
 
 <!DOCTYPE html>
-<html lang="en" class="h-full antialiased">
+<html lang="en">
   <head>
     <ClientRouter />
     <script>
@@ -52,16 +52,16 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
       document.querySelector('meta[name="theme-color"]').content = document.documentElement.classList.contains('dark') ? '#102A43' : '#FFFFFF'
     </script>
   </head>
-  <body class="flex h-full bg-page">
-    <div class="flex w-full">
-      <div class="fixed inset-0 flex justify-center sm:px-8">
-        <div class="flex w-full max-w-7xl lg:px-8">
-          <div class="w-full bg-surface ring-1 ring-border/70"></div>
+  <body>
+    <div class="page-frame">
+      <div class="page-backdrop">
+        <div class="page-backdrop-inner">
+          <div class="page-backdrop-panel"></div>
         </div>
       </div>
-      <div class="relative flex w-full flex-col">
+      <div class="page-content">
         <Header />
-        <main class="flex-auto">
+        <main class="page-main">
           <slot />
         </main>
         <Footer />
@@ -69,3 +69,51 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site)
     </div>
   </body>
 </html>
+
+<style>
+  :global(html) {
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+  }
+  :global(body) {
+    display: flex;
+    height: 100%;
+  }
+  .page-frame {
+    display: flex;
+    width: 100%;
+  }
+  .page-backdrop {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+
+    @media (width >= 40rem) {
+      padding-inline: 2rem;
+    }
+  }
+  .page-backdrop-inner {
+    display: flex;
+    width: 100%;
+    max-width: 80rem;
+
+    @media (width >= 64rem) {
+      padding-inline: 2rem;
+    }
+  }
+  .page-backdrop-panel {
+    width: 100%;
+    background-color: var(--color-surface);
+    box-shadow: var(--ring);
+  }
+  .page-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .page-main {
+    flex: auto;
+  }
+</style>

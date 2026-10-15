@@ -1,0 +1,34 @@
+/* Minimal reset, after Tailwind's preflight. Layered so component styles win. */
+@layer reset {
+  *, ::before, ::after, ::backdrop {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border: 0 solid;
+  }
+
+  html {
+    line-height: 1.5;
+    font-family: var(--font-sans);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  h1, h2, h3, h4, h5, h6 { font-size: inherit; font-weight: inherit; }
+  a { color: inherit; text-decoration: inherit; }
+  ol, ul { list-style: none; }
+  img, svg, video { display: block; vertical-align: middle; }
+  img, video { max-width: 100%; height: auto; }
+  code, pre { font-family: var(--font-mono); font-size: 1em; }
+
+  button, input, textarea, select {
+    font: inherit;
+    letter-spacing: inherit;
+    color: inherit;
+    background-color: transparent;
+    border-radius: 0;
+  }
+  ::placeholder { opacity: 1; }
+
+  [hidden]:where(:not([hidden="until-found"])) { display: none !important; }
+}
