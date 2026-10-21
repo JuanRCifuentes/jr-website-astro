@@ -23,7 +23,7 @@ const articles = (await getCollection('articles'))
         {articles.map((article) => (
           <article class="article-item">
             <Card>
-              <CardTitle href={`/articles/${article.id}`}>
+              <CardTitle href={`/articles/${article.id}/`}>
                 {article.data.title}
               </CardTitle>
               <CardEyebrow

@@ -7,7 +7,8 @@ function load(url: URL) {
   const id = key(url)
   let page = pages.get(id)
   if (!page) {
-    page = fetch(id).then(async (response) => {
+    // Fetch the exact path: the slashless key would cost a redirect.
+    page = fetch(`${url.origin}${url.pathname}`).then(async (response) => {
       if (new URL(response.url).origin !== location.origin || !response.ok || !response.headers.get('content-type')?.includes('text/html')) {
         throw new Error('Section prefetch failed')
       }
