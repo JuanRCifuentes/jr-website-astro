@@ -1,43 +1,14 @@
-# Astro Starter Kit: Minimal
+# juanrcifuentes.com
 
-```sh
-bun create astro@latest -- --template minimal
-```
+Juan R. Cifuentes's personal site, built with [Astro](https://docs.astro.build) and served as static files by Cloudflare.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+| Command | Action |
+| :-- | :-- |
+| `bun install` | Install dependencies |
+| `bun dev` | Start the dev server at `localhost:4321` |
+| `bun run build` | Build the site to `./dist/` |
+| `bun run check:pages` | After a build, check SEO tags, structured data, links and the sitemap |
+| `bun run preview` | Build and serve the site locally with Wrangler |
+| `bun run deploy` | Build and deploy to Cloudflare |
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `bun install`             | Installs dependencies                            |
-| `bun dev`             | Starts local dev server at `localhost:4321`      |
-| `bun build`           | Build your production site to `./dist/`          |
-| `bun preview`         | Preview your build locally, before deploying     |
-| `bun astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `bun astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Who the site is about (name, job title, default title and description, link preview card) lives in `src/lib/site.ts`.
