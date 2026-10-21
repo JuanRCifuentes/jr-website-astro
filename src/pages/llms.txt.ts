@@ -2,8 +2,6 @@ import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { site } from '../lib/site'
 
-const sections = ['About', 'Projects', 'Speaking', 'Uses']
-
 // The site as one Markdown file (llmstxt.org), so an AI assistant can say who
 // Juan is and what he writes about without crawling every page.
 export const GET: APIRoute = async ({ site: origin }) => {
@@ -18,7 +16,7 @@ export const GET: APIRoute = async ({ site: origin }) => {
     '',
     '## Pages',
     '',
-    ...sections.map((label) => `- [${label}](${link(`/${label.toLowerCase()}/`)})`),
+    ...site.pages.map(({ href, label }) => `- [${label}](${link(href)})`),
     '',
     '## Articles',
     '',

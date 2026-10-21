@@ -1,13 +1,7 @@
 ---
 import ContainerOuter from './ContainerOuter.astro'
 import ContainerInner from './ContainerInner.astro'
-
-const navLinks = [
-  { href: '/about/', label: 'About' },
-  { href: '/projects/', label: 'Projects' },
-  { href: '/speaking/', label: 'Speaking' },
-  { href: '/uses/', label: 'Uses' },
-]
+import { site } from '../lib/site'
 ---
 
 <footer class="site-footer">
@@ -16,7 +10,7 @@ const navLinks = [
       <ContainerInner>
         <div class="footer-row">
           <div class="footer-links">
-            {navLinks.map((link) => (
+            {site.pages.map((link) => (
               <a href={link.href} data-astro-prefetch="false" class="footer-link">
                 {link.label}
               </a>

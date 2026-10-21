@@ -1,14 +1,13 @@
 // Keep static section HTML ready for this browsing session, independently of HTTP expiry.
 // Other routes and forms continue through Astro's default loader.
 const pages = new Map<string, Promise<{ html: string; url: string }>>()
-const key = (url: URL) => `${url.origin}${url.pathname.replace(/\/$/, '') || '/'}`
+const key = (url: URL) => url.origin + url.pathname.replace(/\/?$/, '/')
 
 function load(url: URL) {
   const id = key(url)
   let page = pages.get(id)
   if (!page) {
-    // Fetch the exact path: the slashless key would cost a redirect.
-    page = fetch(`${url.origin}${url.pathname}`).then(async (response) => {
+    page = fetch(id).then(async (response) => {
       if (new URL(response.url).origin !== location.origin || !response.ok || !response.headers.get('content-type')?.includes('text/html')) {
         throw new Error('Section prefetch failed')
       }
