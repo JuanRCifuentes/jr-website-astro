@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import ArticleLayout from '../../components/ArticleLayout.astro'
+import { personId, site } from '../../lib/site'
 
 export async function getStaticPaths() {
   const articles = await getCollection('articles')
@@ -13,9 +14,19 @@ export async function getStaticPaths() {
 
 const { article } = Astro.props
 const { Content } = await render(article)
+const url = new URL(Astro.url.pathname, Astro.site).href
+const schema = {
+  '@type': 'BlogPosting',
+  headline: article.data.title,
+  description: article.data.description,
+  datePublished: article.data.date,
+  url,
+  mainEntityOfPage: url,
+  author: { '@id': personId(Astro.site!) },
+}
 ---
 
-<BaseLayout title={`${article.data.title} - Juan R. Cifuentes`} description={article.data.description}>
+<BaseLayout title={`${article.data.title} - ${site.name}`} description={article.data.description} schema={schema}>
   <ArticleLayout title={article.data.title} date={article.data.date}>
     <Content />
   </ArticleLayout>

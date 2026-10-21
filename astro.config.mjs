@@ -9,7 +9,10 @@ export default defineConfig({
   scopedStyleStrategy: "class",
   integrations: [mdx(), sitemap({ filter: (page) => !page.endsWith("/thank-you/") })],
 
-  prefetch: { prefetchAll: true, defaultStrategy: "load" },
+  // Prefetch a link when it is hovered or tapped, not every link on load.
+  prefetch: { prefetchAll: true, defaultStrategy: "hover" },
+  // Inline the CSS (about 12 KB) so the first paint never waits on a stylesheet request.
+  build: { inlineStylesheets: "always" },
 
   vite: {
       // Without the Cloudflare adapter the CSS isn't lowered for older browsers

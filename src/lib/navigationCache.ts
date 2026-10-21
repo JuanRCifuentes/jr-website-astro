@@ -1,7 +1,7 @@
 // Keep static section HTML ready for this browsing session, independently of HTTP expiry.
 // Other routes and forms continue through Astro's default loader.
 const pages = new Map<string, Promise<{ html: string; url: string }>>()
-const key = (url: URL) => `${url.origin}${url.pathname.replace(/\/$/, '') || '/'}`
+const key = (url: URL) => url.origin + url.pathname.replace(/\/?$/, '/')
 
 function load(url: URL) {
   const id = key(url)
