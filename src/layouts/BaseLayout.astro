@@ -2,45 +2,62 @@
 import { ClientRouter } from 'astro:transitions'
 import Header from '../components/Header.astro'
 import Footer from '../components/Footer.astro'
+import JsonLd from '../components/JsonLd.astro'
+import { person, personId, site } from '../lib/site'
 import '../styles/global.css'
 
 interface Props {
   title?: string
   description?: string
+  /** Keep the page out of search results, like the 404 and thank-you pages. */
+  noindex?: boolean
+  /** Structured data for this page, added beside the site's Person and WebSite. */
+  schema?: object
 }
 
-const {
-  title = 'Juan R. Cifuentes - Software designer, founder, and amateur astronaut',
-  description = "I'm Juan, a software designer and entrepreneur based in New York City. I'm the founder and CEO of Planetaria, where we develop technologies that empower regular people to explore space on their own terms.",
-} = Astro.props
+const { title = site.title, description = site.description, noindex = false, schema } = Astro.props
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site)
+const origin = Astro.site!
+const canonicalURL = new URL(Astro.url.pathname, origin)
+const image = new URL(site.image, origin)
+const graph = [
+  person(origin),
+  { '@type': 'WebSite', '@id': new URL('/#website', origin).href, name: site.name, url: origin.href, publisher: { '@id': personId(origin) } },
+  ...(schema ? [schema] : []),
+]
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- The charset must come within the first 1024 bytes, ahead of the router's scripts. -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex ? <meta name="robots" content="noindex" /> : <link rel="canonical" href={canonicalURL} />}
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${site.name}, ${site.jobTitle.toLowerCase()}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={image} />
+    {!noindex && <JsonLd data={{ '@context': 'https://schema.org', '@graph': graph }} />}
     <ClientRouter />
     <script>
       import '../lib/navigationCache'
     </script>
-    <meta charset="utf-8" />
-    <meta name="theme-color" content="#FFFFFF" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>{title}</title>
-    <meta name="description" content={description} />
-    <link rel="canonical" href={canonicalURL} />
-    <link rel="icon" href="/favicon.ico" sizes="32x32" />
-    <link rel="sitemap" href="/sitemap-index.xml" />
-    <meta property="og:type" content="website" />
-    <meta property="og:site_name" content="Juan R. Cifuentes" />
-    <meta property="og:title" content={title} />
-    <meta property="og:description" content={description} />
-    <meta property="og:url" content={canonicalURL} />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content={title} />
-    <meta name="twitter:description" content={description} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <script is:inline>
       document.documentElement.dataset.menuSide = localStorage.getItem('menu-side') === 'left' ? 'left' : 'right'
       // Prevent flash of wrong theme
